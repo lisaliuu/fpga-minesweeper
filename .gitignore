@@ -1,0 +1,6 @@
+# Ignore everything
+*
+
+# Except .vhd and md files
+!*.vhd
+!*.md
