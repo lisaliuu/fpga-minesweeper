@@ -1,6 +1,9 @@
 # Ignore everything
 *
 
-# Except .vhd and md files
+# Include directories
+!*/
 !*.vhd
 !*.md
+!*.csv
+!*.png
