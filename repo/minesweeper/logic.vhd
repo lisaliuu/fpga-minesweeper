@@ -19,9 +19,9 @@ ENTITY logic IS
 		switches : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
 
 		VGA_UPDATE : OUT STD_LOGIC;
-		cell_status : BUFFER ARRAY(0 TO 7, 0 TO 7) OF STD_LOGIC;
-		cell_flagged : BUFFER ARRAY(0 TO 7, 0 TO 7) OF STD_LOGIC;
-		cell_value : BUFFER ARRAY(0 TO 7, 0 TO 7) OF INTEGER;
+		cell_status : BUFFER ARRAY(0 TO 7, 0 TO 7) OF STD_LOGIC; -- cell is closed or opened
+		cell_flagged : BUFFER ARRAY(0 TO 7, 0 TO 7) OF STD_LOGIC; -- cell is flagged or not flagged
+		cell_value : BUFFER ARRAY(0 TO 7, 0 TO 7) OF INTEGER; -- contains number of how many adjacent cells are bombs, or 9 if a bomb
 		cur_sel_cell : BUFFER ARRAY(0 TO 1) OF INTEGER;
 
 	);

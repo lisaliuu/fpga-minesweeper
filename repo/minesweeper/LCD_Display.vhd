@@ -42,11 +42,10 @@ ENTITY LCD_Display IS
 -- *see LCD Controller's Datasheet for other graphics characters available
 
 	PORT(	reset, clk_50MHz			: IN STD_LOGIC;
-			currPlayer					: IN STD_LOGIC;
-			winner						: IN STD_LOGIC;
+			Flags_left			        : IN    STD_LOGIC_VECTOR((Num_Hex_Digits*4)-1 DOWNTO 0);
 			LCD_RS, LCD_E				: OUT	STD_LOGIC;
 			LCD_RW						: OUT STD_LOGIC;
-			DATA_BUS						: INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+			DATA_BUS					: INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
 
 END ENTITY LCD_Display;
 
@@ -60,7 +59,6 @@ MODE_SET, Print_String, LINE2, RETURN_HOME, DROP_LCD_E, HOLD);
 
 SIGNAL state, next_command: STATE_TYPE;
 SIGNAL LCD_display_string	: character_string;
-SIGNAL player_1_string, player_2_string, player_1_wins_string, player_2_wins_string	: character_string;
 
 -- Enter new ASCII hex data above for LCD Display
 SIGNAL DATA_BUS_VALUE, Next_Char: STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -72,41 +70,21 @@ SIGNAL COUNTER: INTEGER;
 
 BEGIN
 
-player_1_string <= (
+LCD_display_string <= (
+-- ASCII hex values for LCD Display
+-- Enter Live Hex Data Values from hardware here
+-- LCD DISPLAYS THE FOLLOWING:
+------------------------------
+--| Flags:XX             |
+--| Minesweeper               |
+------------------------------
 -- Line 1
-X"52",X"65",X"64",X"27",X"73",X"20",X"54",X"75",
-X"72",X"6E",X"20",X"20",X"20",X"20",X"20",X"20",
--- Line 2
+X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & Flags_Left(7 DOWNTO 4),X"0" & Flags_Left(3 DOWNTO 0),
 X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20" 
-);
+-- Line 2
+X"4D",X"69",X"6E",X"65",X"73",X"77",X"65",X"65",
+X"70",X"65",X"72",X"20",X"20",X"20",X"20",X"20");
 
-player_2_string <= (
--- Line 1
-X"42",X"6C",X"75",X"65",X"27",X"73",X"20",X"54",
-X"75",X"72",X"6E",X"20",X"20",X"20",X"20",X"20",
--- Line 2
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20" 
-);
-
-player_1_wins_string <= (
--- Line 1
-X"52",X"65",X"64",X"20",X"77",X"69",X"6E",X"73",
-X"21",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
--- Line 2
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20" 
-);
-
-player_2_wins_string <= (
--- Line 1
-X"42",X"6C",X"75",X"65",X"20",X"77",X"69",X"6E",
-X"73",X"21",X"20",X"20",X"20",X"20",X"20",X"20",
--- Line 2
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
-X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20" 
-);
 
 -- BIDIRECTIONAL TRI STATE LCD DATA BUS
 	DATA_BUS <= DATA_BUS_VALUE WHEN LCD_RW_INT = '0' ELSE "ZZZZZZZZ";
@@ -128,23 +106,6 @@ X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"
 			ELSE
 				CLK_COUNT_200HZ <= X"00000";
 				CLK_200HZ_Enable <= '1';
-			END IF;
-		END IF;
-	END PROCESS;
-	
-	PROCESS (currPlayer, winner)
-	BEGIN
-		IF (winner = '1') THEN
-			IF (currPlayer = '1') THEN
-				LCD_display_string <= player_1_wins_string;
-			ELSE
-				LCD_display_string <= player_2_wins_string;
-			END IF;
-		ELSE
-			IF (currPlayer = '0') THEN
-				LCD_display_string <= player_1_string;
-			ELSE
-				LCD_display_string <= player_2_string;
 			END IF;
 		END IF;
 	END PROCESS;
