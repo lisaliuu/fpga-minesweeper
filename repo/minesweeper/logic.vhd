@@ -54,6 +54,7 @@ ARCHITECTURE architecture OF logic IS
 	SIGNAL check_win : STD_LOGIC := '1';
 	signal board_ready : std_logic := '0';
 	signal ban_position : user_pos;
+	signal flag_count : STD_LOGIC_VECTOR(7 DOWNTO 0); -- number of flags avaiable, shown on LCD display
 
 BEGIN
 	

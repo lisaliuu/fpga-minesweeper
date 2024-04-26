@@ -42,7 +42,7 @@ ENTITY LCD_Display IS
 -- *see LCD Controller's Datasheet for other graphics characters available
 
 	PORT(	reset, clk_50MHz			: IN STD_LOGIC;
-			Flags_left			        : IN    STD_LOGIC_VECTOR((Num_Hex_Digits*4)-1 DOWNTO 0);
+			flag_count			        : IN    STD_LOGIC_VECTOR((Num_Hex_Digits*4)-1 DOWNTO 0);
 			LCD_RS, LCD_E				: OUT	STD_LOGIC;
 			LCD_RW						: OUT STD_LOGIC;
 			DATA_BUS					: INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
@@ -79,7 +79,7 @@ LCD_display_string <= (
 --| FPGA Minesweeper     |
 ------------------------------
 -- Line 1
-X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & Flags_Left(7 DOWNTO 4),X"0" & Flags_Left(3 DOWNTO 0),
+X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & flag_count(7 DOWNTO 4),X"0" & flag_count(3 DOWNTO 0),
 X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
 -- Line 2
 X"46",X"50",X"47",X"41",X"20",X"4D",X"69",X"6E",
