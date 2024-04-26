@@ -76,14 +76,14 @@ LCD_display_string <= (
 -- LCD DISPLAYS THE FOLLOWING:
 ------------------------------
 --| Flags:XX             |
---| Minesweeper               |
+--| FPGA Minesweeper     |
 ------------------------------
 -- Line 1
 X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & Flags_Left(7 DOWNTO 4),X"0" & Flags_Left(3 DOWNTO 0),
 X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
 -- Line 2
-X"4D",X"69",X"6E",X"65",X"73",X"77",X"65",X"65",
-X"70",X"65",X"72",X"20",X"20",X"20",X"20",X"20");
+X"46",X"50",X"47",X"41",X"20",X"4D",X"69",X"6E",
+X"65",X"73",X"77",X"65",X"65",X"70",X"65",X"72");
 
 
 -- BIDIRECTIONAL TRI STATE LCD DATA BUS
