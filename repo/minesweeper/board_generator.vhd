@@ -25,11 +25,7 @@
 -- Always specify the IEEE library in your design
 
 -- Move this to top level when it works
-PACKAGE board_layout_pkg IS
-	subtype small_range is natural range 0 to 10;
-	type board_size is array (0 to 7, 0 to 7) of small_range;
-	type user_pos is array(0 TO 1) of small_range;
-END board_layout_pkg;
+
 
 LIBRARY work;
 USE work.ALL;
