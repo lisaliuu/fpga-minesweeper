@@ -19,14 +19,14 @@ ENTITY logic IS
 		reset : IN STD_LOGIC;
 		-- user input
 		buttons : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
-		switches : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		switches : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
 		
 		VGA_UPDATE : OUT STD_LOGIC;
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos
-
+		cur_sel_cell : INOUT user_pos;
+		test:OUT std_logic
 	);
 END logic;
 
@@ -39,28 +39,28 @@ ARCHITECTURE struct OF logic IS
 		PORT(	CLOCK_50, start_randomizer 	: in std_logic;
 				banned_position 					: in user_pos;
 				board_output 						: out board_size;
-				completed							: out std_logic);
+				completed							: inout std_logic);
 
 	END COMPONENT;
 
-	SIGNAL game_over : STD_LOGIC;
+	SIGNAL game_over : STD_LOGIC := '0';
 	SIGNAL first_pressed : STD_LOGIC := '0';
+	signal start_gen : STD_LOGIC := '0';
 	SIGNAL check_win : STD_LOGIC := '1';
-	signal board_ready : std_logic := '0';
+	signal finished_gen : STD_LOGIC := '0';
 	signal ban_position : user_pos;
-	signal ready_pressed : STD_LOGIC :='0';
-
 BEGIN
 	
 	U1: board_generator PORT MAP
 		(CLOCK_50				=>	clk,
-		 start_randomizer		=> ready_pressed,
+		 start_randomizer		=> start_gen,
 		 banned_position		=> ban_position,
 		 board_output 			=> cell_value,
-		 completed				=> board_ready
+		 completed				=> finished_gen
 		);
 
-	user_input: PROCESS (switches, buttons)
+	
+	user_input: PROCESS (switches, buttons, finished_gen)
 	-- switch 0 == 0 for playing
 	-- switch 0 == 1 for game over/reset
 	BEGIN
@@ -68,8 +68,13 @@ BEGIN
 	
 	-- start the game when sw=0	
 	-- initialize blank board
+		if finished_gen = '1' then
+			start_gen <='0';
+		end if;
+		
 		VGA_UPDATE <= '1';
-		IF (switches(0) = '0') THEN
+		IF (switches(0) = '1') THEN
+			first_pressed <= '0';
 			cur_sel_cell <= (0, 0);
 			FOR i IN 0 TO 7 LOOP -- Column
 				FOR j IN 0 TO 7 LOOP -- Row
@@ -118,15 +123,14 @@ BEGIN
 			-- click (closed -> open)
 			IF (first_pressed='0') THEN
 				--first press
-				-- @TEYON PUT UR STUFF HERE
 				ban_position <= cur_sel_cell;
 				-- board is now partially open
 				first_pressed <= '1';
-				ready_pressed <= '1';
+				start_gen <='1';
 			-- ELSE 
-			elsif board_ready = '1' then
-				cell_status(cur_sel_cell(0)*8, cur_sel_cell(1)) <= 1;
-				IF (cell_value(cur_sel_cell(0)*8, cur_sel_cell(1)) = 9) THEN -- hit a bomb
+			elsif finished_gen = '1' then
+				cell_status(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
+				IF (cell_value(cur_sel_cell(0), cur_sel_cell(1)) = 9) THEN -- hit a bomb
 					game_over <= '1'; -- lost
 				END IF;
 
@@ -141,19 +145,14 @@ BEGIN
 					game_over <= '1'; -- won
 				END IF;
 			end if;
-		elsif (switches(2)='1') THEN
+		end if;
+		if (switches(2)='1') THEN
 			-- flag
-			IF(cell_status(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
+			test<='1';
+			IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
 				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
 			ELSE
 				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
-			END IF;
-		elsif (switches(3)='1') THEN
-			-- unflag
-			IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=1) THEN
-				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
-			ELSE
-				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
 			END IF;
 		END IF;
 	END PROCESS user_input;

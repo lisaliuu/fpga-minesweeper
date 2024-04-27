@@ -115,7 +115,7 @@ architecture Structure of DE2_115_TOP is
 		clk: in std_logic;
 		reset: in std_logic; -- sw[0]
 		buttons : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
-		switches : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
+		switches : IN STD_LOGIC_VECTOR(2 DOWNTO 0)
 	);
 	end component;
 	
@@ -124,7 +124,7 @@ architecture Structure of DE2_115_TOP is
 			clk => CLOCK_50,
 			reset => SW(0),
 			buttons => KEY(3 DOWNTO 0),
-			switches => SW(3 DOWNTO 0)
+			switches => SW(2 DOWNTO 0)
 		);
 		
 

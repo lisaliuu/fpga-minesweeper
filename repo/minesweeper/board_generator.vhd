@@ -64,7 +64,7 @@ generic(
 	 
 		board_output				: OUT board_size;			-- Minesweeper Game Board
 		
-		completed					: OUT STD_LOGIC			-- Signifies when board is made
+		completed					: INOUT STD_LOGIC			-- Signifies when board is made
 	);
 END board_generator;
 
@@ -101,6 +101,7 @@ BEGIN
 		
 	gen_capture : process (CLOCK_50)
 	begin
+	--if not completed = '1' then
 		if rising_edge(CLOCK_50) and number_counter < bomb_count and start_randomizer = '1' then
 			-- Reset the board and position on start
 			if number_counter = 0 then
@@ -186,6 +187,7 @@ BEGIN
 				inc_box <= bomb_count;
 			end if;
 		end if;
+		--end if;
 		-- Make it so each box increment is done on clock cycle
 		
    end process gen_capture;
