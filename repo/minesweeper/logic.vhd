@@ -26,7 +26,7 @@ ENTITY logic IS
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos;
+		cur_sel_cell : INOUT user_pos
 	);
 END logic;
 

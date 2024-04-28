@@ -13,7 +13,7 @@ ENTITY board IS
 		-- 
 		cell_status : IN board_bool;
 		cell_flagged : IN board_bool;
-		cell_value : IN board_size;
+		cell_value : IN board_size
 	);
 END board;
 
@@ -78,13 +78,16 @@ BEGIN
 			-- if chains <- cell region
 			-- TODO: check and set the region
 			-- seperate the value as states
-			IF expression THEN
-				-- (last) else <- grid region
-			ELSE
-				Red <= grid_color(2);
-				Green <= grid_color(1);
-				Blue <= grid_color(0);
-			END IF;
+			Red <= grid_color(2);
+			Green <= grid_color(1);
+			Blue <= grid_color(0);
+			-- IF expression THEN
+			-- 	-- (last) else <- grid region
+			-- ELSE
+			-- 	Red <= grid_color(2);
+			-- 	Green <= grid_color(1);
+			-- 	Blue <= grid_color(0);
+			-- END IF;
 		END IF;
 	END PROCESS RGB_Display;
 

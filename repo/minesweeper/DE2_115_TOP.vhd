@@ -123,8 +123,7 @@ architecture Structure of DE2_115_TOP is
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos;
-		test:OUT std_logic
+		cur_sel_cell : INOUT user_pos
 	);
 	end component;
 	COMPONENT board IS
@@ -132,6 +131,10 @@ architecture Structure of DE2_115_TOP is
 			Vert_sync, Horiz_sync : IN STD_LOGIC;
 			pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 			Red, Green, Blue : OUT STD_LOGIC;
+			-- 
+			cell_status : IN board_bool;
+			cell_flagged : IN board_bool;
+			cell_value : IN board_size
 		);
 	END COMPONENT;
 
@@ -186,7 +189,7 @@ begin
 	VGA_HS <= horiz_sync_int;
 	VGA_VS <= vert_sync_int;
 
-	VGA_SYNC_module PORT MAP(
+	VGA_sync: VGA_SYNC_module PORT MAP (
 		-- IN
 		clock_50Mhz => CLOCK_50,
 		red => red_int,
@@ -204,7 +207,7 @@ begin
 		pixel_column => pixel_column_int
 	);
 	
-	board PORT MAP(
+	Board_display: board PORT MAP(
 		-- IN
 		Vert_sync => vert_sync_int,
 		Horiz_sync => horiz_sync_int,
