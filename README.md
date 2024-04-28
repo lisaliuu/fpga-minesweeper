@@ -6,3 +6,8 @@
 - don't edit
   - repo/minesweeper/VGA_SYNC.VHD
   - repo/minesweeper/video_PLL.vhd
+
+- DE2 <- top level
+  - logic
+    - board_generator
+      - lfsr
