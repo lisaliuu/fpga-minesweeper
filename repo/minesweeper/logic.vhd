@@ -8,6 +8,7 @@
 LIBRARY work;
 USE work.ALL;
 USE work.board_layout_pkg.ALL;
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;

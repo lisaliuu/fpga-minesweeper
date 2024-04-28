@@ -20,6 +20,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+USE work.board_layout_pkg.ALL;
 
 
 entity DE2_115_TOP is
@@ -115,7 +116,14 @@ architecture Structure of DE2_115_TOP is
 		clk: in std_logic;
 		reset: in std_logic; -- sw[0]
 		buttons : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
-		switches : IN STD_LOGIC_VECTOR(2 DOWNTO 0)
+		switches : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+
+    	VGA_UPDATE : OUT STD_LOGIC;
+		cell_status : INOUT board_bool;
+		cell_flagged : INOUT board_bool;
+		cell_value : INOUT board_size;
+		cur_sel_cell : INOUT user_pos;
+		test:OUT std_logic
 	);
 	end component;
 	
