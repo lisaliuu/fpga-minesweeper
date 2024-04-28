@@ -3,7 +3,10 @@
 
 # Include directories
 !*/
+!eight-segment/**
 !*.vhd
 !*.md
 !*.csv
 !*.png
+
+ref-*/

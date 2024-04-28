@@ -25,11 +25,7 @@
 -- Always specify the IEEE library in your design
 
 -- Move this to top level when it works
-PACKAGE board_layout_pkg IS
-	subtype small_range is natural range 0 to 10;
-	type board_size is array (0 to 7, 0 to 7) of small_range;
-	type user_pos is array(0 TO 1) of small_range;
-END board_layout_pkg;
+
 
 LIBRARY work;
 USE work.ALL;
@@ -68,7 +64,7 @@ generic(
 	 
 		board_output				: OUT board_size;			-- Minesweeper Game Board
 		
-		completed					: OUT STD_LOGIC			-- Signifies when board is made
+		completed					: INOUT STD_LOGIC			-- Signifies when board is made
 	);
 END board_generator;
 
@@ -105,6 +101,7 @@ BEGIN
 		
 	gen_capture : process (CLOCK_50)
 	begin
+	--if not completed = '1' then
 		if rising_edge(CLOCK_50) and number_counter < bomb_count and start_randomizer = '1' then
 			-- Reset the board and position on start
 			if number_counter = 0 then
@@ -190,6 +187,7 @@ BEGIN
 				inc_box <= bomb_count;
 			end if;
 		end if;
+		--end if;
 		-- Make it so each box increment is done on clock cycle
 		
    end process gen_capture;
