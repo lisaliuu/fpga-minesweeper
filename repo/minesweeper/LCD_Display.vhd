@@ -2,6 +2,8 @@ LIBRARY IEEE;
 USE  IEEE.STD_LOGIC_1164.all;
 USE  IEEE.STD_LOGIC_ARITH.all;
 USE  IEEE.STD_LOGIC_UNSIGNED.all;
+USE  IEEE.NUMERIC_STD.all;
+
 
 
 ENTITY LCD_Display IS
@@ -42,8 +44,8 @@ ENTITY LCD_Display IS
 -- *see LCD Controller's Datasheet for other graphics characters available
 
 	PORT(	reset, clk_50MHz			: IN STD_LOGIC;
-			flag_count			        : IN    STD_LOGIC_VECTOR((Num_Hex_Digits*4)-1 DOWNTO 0);
-			LCD_RS, LCD_E				: OUT	STD_LOGIC;
+			flag_count			        : IN INTEGER RANGE 0 TO 99;
+			LCD_RS, LCD_E				: OUT STD_LOGIC;
 			LCD_RW						: OUT STD_LOGIC;
 			DATA_BUS					: INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
 
@@ -67,8 +69,11 @@ SIGNAL CHAR_COUNT: STD_LOGIC_VECTOR(4 DOWNTO 0);
 SIGNAL CLK_200HZ_Enable,LCD_RW_INT : STD_LOGIC;
 SIGNAL Line1_chars, Line2_chars: STD_LOGIC_VECTOR(127 DOWNTO 0);
 SIGNAL COUNTER: INTEGER;
+SIGNAL flags: STD_LOGIC_VECTOR(7 DOWNTO 0);
 
 BEGIN
+
+flags <= std_logic_vector(to_unsigned(flag_count, flags'length));
 
 LCD_display_string <= (
 -- ASCII hex values for LCD Display
@@ -79,7 +84,7 @@ LCD_display_string <= (
 --| FPGA Minesweeper     |
 ------------------------------
 -- Line 1
-X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & flag_count(7 DOWNTO 4),X"0" & flag_count(3 DOWNTO 0),
+X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & flags(7 DOWNTO 4),X"0" & flags(3 DOWNTO 0),
 X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
 -- Line 2
 X"46",X"50",X"47",X"41",X"20",X"4D",X"69",X"6E",

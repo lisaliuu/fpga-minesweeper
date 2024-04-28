@@ -50,7 +50,7 @@ ARCHITECTURE struct OF logic IS
 	SIGNAL check_win : STD_LOGIC := '1';
 	signal finished_gen : STD_LOGIC := '0';
 	signal ban_position : user_pos;
-	signal flag_count : STD_LOGIC_VECTOR(7 DOWNTO 0); -- number of flags avaiable, shown on LCD display
+	signal flag_count : INTEGER RANGE 0 TO 99 := 10; -- number of flags avaiable, shown on LCD display
 
 BEGIN
 	
@@ -154,8 +154,10 @@ BEGIN
 			test<='1';
 			IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
 				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
+				flag_count <= (flag_count - 1);
 			ELSE
 				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
+				flag_count <= (flag_count + 1);
 			END IF;
 		END IF;
 	END PROCESS user_input;
