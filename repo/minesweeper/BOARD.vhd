@@ -3,23 +3,23 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_ARITH.ALL;
 USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-ENTITY board IS (
+USE work.board_layout_pkg.ALL;
+
+ENTITY board IS
 	PORT (
 		Vert_sync, Horiz_sync : IN STD_LOGIC;
 		pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		Red, Green, Blue : OUT STD_LOGIC;
 		-- 
-		boardLayout : IN board_status;
-		boardLayout : IN board_value;
-		-- nextPieceColumn : IN unsigned(6 DOWNTO 0);
-		-- winner : IN STD_LOGIC
+		cell_status : IN board_bool;
+		cell_flagged : IN board_bool;
+		cell_value : IN board_size;
 	);
-	)
 END board;
 
 -- Board is a 8x8 grid of squares
 -- 50 x 50 pixels for each square
--- |               four pixels                    | WIDTH = 640
+-- |                   four pixels                 | WIDTH = 640
 -- | <= 80 => | 01 02 03 04 05 06 07 08 | <= 80 => | HEIGHT = 480
 -- | <= 80 => | 09 10 11 12 13 14 15 16 | <= 80 => | 640 x 480
 -- | <= 80 => | 17 18 19 20 21 22 23 24 | <= 80 => |
@@ -28,12 +28,12 @@ END board;
 -- | <= 80 => | 41 42 43 44 45 46 47 48 | <= 80 => |
 -- | <= 80 => | 49 50 51 52 53 54 55 56 | <= 80 => |
 -- | <= 80 => | 57 58 59 60 61 62 63 64 | <= 80 => | (80, 4) <-> (560-1, 476-1)
--- |               four pixels                    | 480 x 472
+-- |                   four pixels                 | 480 x 472
 
 ARCHITECTURE behavior OF board IS
 	SIGNAL background_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- white
 	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- black
-	signal closed_cell_color: STD_LOGIC_VECTOR(2 DOWNTO 0) := "010"; -- green
+	SIGNAL closed_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010"; -- green
 	-- Video Display Signals
 	-- signal for background
 	SIGNAL margin_width, margin_height : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -60,7 +60,7 @@ ARCHITECTURE behavior OF board IS
 BEGIN
 	-- display the grid of the board
 	RGB_Display : PROCESS (pixel_row, pixel_column)
-	-- RGB_Display : PROCESS (Vert_sync, Horiz_sync, pixel_row, pixel_column)
+		-- RGB_Display : PROCESS (Vert_sync, Horiz_sync, pixel_row, pixel_column)
 	BEGIN
 		-- TODO: set cell regiion (cell_#x and cell_#y)
 		-- That first long section
@@ -79,7 +79,7 @@ BEGIN
 			-- TODO: check and set the region
 			-- seperate the value as states
 			IF expression THEN
-			-- (last) else <- grid region
+				-- (last) else <- grid region
 			ELSE
 				Red <= grid_color(2);
 				Green <= grid_color(1);

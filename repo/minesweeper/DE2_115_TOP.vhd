@@ -111,6 +111,7 @@ entity DE2_115_TOP is
 end DE2_115_TOP;
 
 architecture Structure of DE2_115_TOP is
+	-- Compoment
 	component logic IS
 	port(
 		clk: in std_logic;
@@ -126,14 +127,97 @@ architecture Structure of DE2_115_TOP is
 		test:OUT std_logic
 	);
 	end component;
-	
-	begin
-		logic_block: logic port map (
-			clk => CLOCK_50,
-			reset => SW(0),
-			buttons => KEY(3 DOWNTO 0),
-			switches => SW(2 DOWNTO 0)
+	COMPONENT board IS
+		PORT (
+			Vert_sync, Horiz_sync : IN STD_LOGIC;
+			pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+			Red, Green, Blue : OUT STD_LOGIC;
 		);
-		
+	END COMPONENT;
+
+	COMPONENT VGA_SYNC_MODULE
+		PORT (
+			clock_50Mhz : IN STD_LOGIC;
+			red, green, blue : IN STD_LOGIC;
+			red_out, green_out, blue_out : OUT STD_LOGIC;
+			horiz_sync_out, vert_sync_out, video_on, pixel_clock : OUT STD_LOGIC;
+			pixel_row, pixel_column : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+		);
+	END COMPONENT;
+
+	-- Signals
+	--     VGA
+	SIGNAL red_int : STD_LOGIC;
+	SIGNAL green_int : STD_LOGIC;
+	SIGNAL blue_int : STD_LOGIC;
+	SIGNAL video_on_int : STD_LOGIC;
+	SIGNAL vert_sync_int : STD_LOGIC;
+	SIGNAL horiz_sync_int : STD_LOGIC;
+	SIGNAL pixel_clock_int : STD_LOGIC;
+	SIGNAL pixel_row_int : STD_LOGIC_VECTOR(9 DOWNTO 0);
+	SIGNAL pixel_column_int : STD_LOGIC_VECTOR(9 DOWNTO 0);
+	--    Board status
+	SIGNAL VGA_update_int : STD_LOGIC;
+	signal cell_status_signal : board_bool;
+	signal cell_flagged_signal : board_bool;
+	signal cell_value_signal : board_size;
+
+begin
+
+	logic_block: logic port map (
+		-- IN
+		clk => CLOCK_50,
+		reset => SW(0),
+		buttons => KEY(3 DOWNTO 0),
+		switches => SW(2 DOWNTO 0),
+		-- OUT
+		VGA_UPDATE => VGA_update_int,
+		-- INOUT
+		cell_status => cell_status_signal,
+		cell_flagged => cell_flagged_signal,
+		cell_value => cell_value_signal
+		-- cur_sel_cell : INOUT user_pos; -- <- I don't think this is needed
+	);
+	
+	VGA_R(6 DOWNTO 0) <= "0000000";
+	VGA_G(6 DOWNTO 0) <= "0000000";
+	VGA_B(6 DOWNTO 0) <= "0000000";
+
+	VGA_HS <= horiz_sync_int;
+	VGA_VS <= vert_sync_int;
+
+	VGA_SYNC_module PORT MAP(
+		-- IN
+		clock_50Mhz => CLOCK_50,
+		red => red_int,
+		green => green_int,
+		blue => blue_int,
+		red_out => VGA_R(7),
+		green_out => VGA_G(7),
+		blue_out => VGA_B(7),
+		-- OUT
+		horiz_sync_out => horiz_sync_int,
+		vert_sync_out => vert_sync_int,
+		video_on => VGA_BLANK_N,
+		pixel_clock => VGA_CLK,
+		pixel_row => pixel_row_int,
+		pixel_column => pixel_column_int
+	);
+	
+	board PORT MAP(
+		-- IN
+		Vert_sync => vert_sync_int,
+		Horiz_sync => horiz_sync_int,
+		pixel_row => pixel_row_int,
+		pixel_column => pixel_column_int,
+		-- OUT
+		Red => red_int,
+		Green => green_int,
+		Blue => blue_int,
+		-- IN
+		cell_status => cell_status_signal,
+		cell_flagged => cell_flagged_signal,
+		cell_value => cell_value_signal
+	);
 
 end Structure;

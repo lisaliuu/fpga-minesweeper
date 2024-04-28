@@ -25,3 +25,4 @@ MineSweeper
   - BOARD
   - VGA_SYNC_module
     - video_PLL
+  - LCD

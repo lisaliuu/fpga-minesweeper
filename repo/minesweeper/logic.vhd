@@ -27,14 +27,13 @@ ENTITY logic IS
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
 		cur_sel_cell : INOUT user_pos;
-		test:OUT std_logic
 	);
 END logic;
 
 
 
 ARCHITECTURE struct OF logic IS
-
+-- SINGAL cell_status_signal
 	COMPONENT board_generator
 			
 		PORT(	CLOCK_50, start_randomizer 	: in std_logic;
@@ -149,7 +148,6 @@ BEGIN
 		end if;
 		if (switches(2)='1') THEN
 			-- flag
-			test<='1';
 			IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
 				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
 			ELSE
