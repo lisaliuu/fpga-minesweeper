@@ -38,49 +38,50 @@ END board;
 ARCHITECTURE behavior OF board IS
 	-- Video Display Signals
 	--MARK: signal for colors
-	SIGNAL background_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- white
-	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- black
-	SIGNAL opened_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- black
+	SIGNAL background_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- white
+	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- black
+	SIGNAL opened_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- black
 	SIGNAL closed_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010"; -- green
 	SIGNAL flagged_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100"; -- red
 	--MARK: signal for background
-	SIGNAL margin_width, margin_height : STD_LOGIC_VECTOR(9 DOWNTO 0);
-	SIGNAL margin_x, margin_y : STD_LOGIC_VECTOR(9 DOWNTO 0);
+	SIGNAL margin_width, margin_height : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(472, 10);
+	SIGNAL margin_x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(91, 10);
+	SIGNAL margin_y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(4, 10);
 	--MARK: signal for cells
-	SIGNAL cell_size : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(50, 10);
-	SIGNAL cell_01x, cell_09x, cell_17x, cell_25x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(92, 10);
-	SIGNAL cell_02x, cell_10x, cell_18x, cell_26x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(150, 10);
-	SIGNAL cell_03x, cell_11x, cell_19x, cell_27x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(208, 10);
-	SIGNAL cell_04x, cell_12x, cell_20x, cell_28x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(266, 10);
-	SIGNAL cell_05x, cell_13x, cell_21x, cell_29x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(317, 10);
-	SIGNAL cell_06x, cell_14x, cell_22x, cell_30x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(382, 10);
-	SIGNAL cell_07x, cell_15x, cell_23x, cell_31x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(440, 10);
-	SIGNAL cell_08x, cell_16x, cell_24x, cell_32x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(498, 10);
-	SIGNAL cell_33x, cell_41x, cell_49x, cell_57x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(92, 10);
-	SIGNAL cell_34x, cell_42x, cell_50x, cell_58x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(150, 10);
-	SIGNAL cell_35x, cell_43x, cell_51x, cell_59x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(208, 10);
-	SIGNAL cell_36x, cell_44x, cell_52x, cell_60x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(266, 10);
-	SIGNAL cell_37x, cell_45x, cell_53x, cell_61x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(317, 10);
-	SIGNAL cell_38x, cell_46x, cell_54x, cell_62x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(382, 10);
-	SIGNAL cell_39x, cell_47x, cell_55x, cell_63x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(440, 10);
-	SIGNAL cell_40x, cell_48x, cell_56x, cell_64x : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(498, 10);
+	SIGNAL cell_size : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(50, 10);
+	SIGNAL cell_01x, cell_09x, cell_17x, cell_25x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(92, 10);
+	SIGNAL cell_02x, cell_10x, cell_18x, cell_26x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(150, 10);
+	SIGNAL cell_03x, cell_11x, cell_19x, cell_27x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(208, 10);
+	SIGNAL cell_04x, cell_12x, cell_20x, cell_28x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(266, 10);
+	SIGNAL cell_05x, cell_13x, cell_21x, cell_29x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(317, 10);
+	SIGNAL cell_06x, cell_14x, cell_22x, cell_30x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(382, 10);
+	SIGNAL cell_07x, cell_15x, cell_23x, cell_31x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(440, 10);
+	SIGNAL cell_08x, cell_16x, cell_24x, cell_32x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(498, 10);
+	SIGNAL cell_33x, cell_41x, cell_49x, cell_57x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(92, 10);
+	SIGNAL cell_34x, cell_42x, cell_50x, cell_58x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(150, 10);
+	SIGNAL cell_35x, cell_43x, cell_51x, cell_59x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(208, 10);
+	SIGNAL cell_36x, cell_44x, cell_52x, cell_60x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(266, 10);
+	SIGNAL cell_37x, cell_45x, cell_53x, cell_61x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(317, 10);
+	SIGNAL cell_38x, cell_46x, cell_54x, cell_62x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(382, 10);
+	SIGNAL cell_39x, cell_47x, cell_55x, cell_63x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(440, 10);
+	SIGNAL cell_40x, cell_48x, cell_56x, cell_64x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(498, 10);
 
-	SIGNAL cell_01y, cell_02y, cell_03y, cell_04y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(4, 10);
-	SIGNAL cell_05y, cell_06y, cell_07y, cell_08y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(4, 10);
-	SIGNAL cell_09y, cell_10y, cell_11y, cell_12y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(62, 10);
-	SIGNAL cell_13y, cell_14y, cell_15y, cell_16y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(62, 10);
-	SIGNAL cell_17y, cell_18y, cell_19y, cell_20y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(120, 10);
-	SIGNAL cell_21y, cell_22y, cell_23y, cell_24y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(120, 10);
-	SIGNAL cell_25y, cell_26y, cell_27y, cell_28y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(178, 10);
-	SIGNAL cell_29y, cell_30y, cell_31y, cell_32y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(178, 10);
-	SIGNAL cell_33y, cell_34y, cell_35y, cell_36y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(236, 10);
-	SIGNAL cell_37y, cell_38y, cell_39y, cell_40y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(236, 10);
-	SIGNAL cell_41y, cell_42y, cell_43y, cell_44y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(294, 10);
-	SIGNAL cell_45y, cell_46y, cell_47y, cell_48y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(294, 10);
-	SIGNAL cell_49y, cell_50y, cell_51y, cell_52y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(352, 10);
-	SIGNAL cell_53y, cell_54y, cell_55y, cell_56y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(352, 10);
-	SIGNAL cell_57y, cell_58y, cell_59y, cell_60y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(410, 10);
-	SIGNAL cell_61y, cell_62y, cell_63y, cell_64y : STD_LOGIC_VECTOR(9 DOWNTO 0) := Conv_STD_LOGIC_VECTOR(410, 10);
+	SIGNAL cell_01y, cell_02y, cell_03y, cell_04y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(4, 10);
+	SIGNAL cell_05y, cell_06y, cell_07y, cell_08y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(4, 10);
+	SIGNAL cell_09y, cell_10y, cell_11y, cell_12y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(62, 10);
+	SIGNAL cell_13y, cell_14y, cell_15y, cell_16y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(62, 10);
+	SIGNAL cell_17y, cell_18y, cell_19y, cell_20y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(120, 10);
+	SIGNAL cell_21y, cell_22y, cell_23y, cell_24y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(120, 10);
+	SIGNAL cell_25y, cell_26y, cell_27y, cell_28y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(178, 10);
+	SIGNAL cell_29y, cell_30y, cell_31y, cell_32y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(178, 10);
+	SIGNAL cell_33y, cell_34y, cell_35y, cell_36y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(236, 10);
+	SIGNAL cell_37y, cell_38y, cell_39y, cell_40y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(236, 10);
+	SIGNAL cell_41y, cell_42y, cell_43y, cell_44y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(294, 10);
+	SIGNAL cell_45y, cell_46y, cell_47y, cell_48y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(294, 10);
+	SIGNAL cell_49y, cell_50y, cell_51y, cell_52y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(352, 10);
+	SIGNAL cell_53y, cell_54y, cell_55y, cell_56y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(352, 10);
+	SIGNAL cell_57y, cell_58y, cell_59y, cell_60y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(410, 10);
+	SIGNAL cell_61y, cell_62y, cell_63y, cell_64y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(410, 10);
 	--MARK: signal for bitmaps
 	TYPE number_bitmap IS ARRAY(0 TO 49) OF STD_LOGIC_VECTOR(0 TO 49);
 	SIGNAL number_0 : number_bitmap := (
@@ -604,32 +605,38 @@ BEGIN
 	RGB_Display : PROCESS (pixel_row, pixel_column)
 		-- RGB_Display : PROCESS (Vert_sync, Horiz_sync, pixel_row, pixel_column)
 	BEGIN
-		margin_width <= Conv_STD_LOGIC_VECTOR(75, 10);
-		margin_height <= Conv_STD_LOGIC_VECTOR(75, 10);
-		margin_x <= Conv_STD_LOGIC_VECTOR(91, 10);
-		margin_y <= Conv_STD_LOGIC_VECTOR(4, 10);
 		-- if-else statement (first long section is not needed <- square, not circle)
 		IF -- set the background
 			-- margin_x <= pixel_column
-			('0' & margin_x <= pixel_column) AND
-			(margin_x + 640 >= '0' & pixel_column)
+			('0' & margin_x >= pixel_column) AND
+			('0' & pixel_column >= margin_x + cell_size) AND
+			('0' & margin_y >= pixel_row) AND
+			('0' & pixel_row >= margin_y + cell_size)
 			THEN
 			-- 'background color' to white
 			Red <= background_color(2);
 			Green <= background_color(1);
 			Blue <= background_color(0);
-		ELSE
-			-- if chains <- cell region
-			Red <= grid_color(2);
-			Green <= grid_color(1);
-			Blue <= grid_color(0);
-			-- IF expression THEN
-			-- 	-- (last) else <- grid region
-			-- ELSE
-			-- 	Red <= grid_color(2);
-			-- 	Green <= grid_color(1);
-			-- 	Blue <= grid_color(0);
-			-- END IF;
+		ELSE -- if chains <- cell region
+			IF
+				('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
+				('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_02x <= pixel_column) AND ('0' & pixel_column <= cell_02x + cell_size) AND
+				('0' & cell_02y <= pixel_row) AND ('0' & pixel_row <= cell_02y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSE
+				Red <= grid_color(2);
+				Green <= grid_color(1);
+				Blue <= grid_color(0);
+			END IF;
 		END IF;
 	END PROCESS RGB_Display;
 
