@@ -53,7 +53,7 @@ ARCHITECTURE behavior OF board IS
 	SIGNAL cell_02x, cell_10x, cell_18x, cell_26x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(150, 10);
 	SIGNAL cell_03x, cell_11x, cell_19x, cell_27x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(208, 10);
 	SIGNAL cell_04x, cell_12x, cell_20x, cell_28x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(266, 10);
-	SIGNAL cell_05x, cell_13x, cell_21x, cell_29x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(317, 10);
+	SIGNAL cell_05x, cell_13x, cell_21x, cell_29x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(324, 10);
 	SIGNAL cell_06x, cell_14x, cell_22x, cell_30x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(382, 10);
 	SIGNAL cell_07x, cell_15x, cell_23x, cell_31x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(440, 10);
 	SIGNAL cell_08x, cell_16x, cell_24x, cell_32x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(498, 10);
@@ -61,7 +61,7 @@ ARCHITECTURE behavior OF board IS
 	SIGNAL cell_34x, cell_42x, cell_50x, cell_58x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(150, 10);
 	SIGNAL cell_35x, cell_43x, cell_51x, cell_59x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(208, 10);
 	SIGNAL cell_36x, cell_44x, cell_52x, cell_60x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(266, 10);
-	SIGNAL cell_37x, cell_45x, cell_53x, cell_61x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(317, 10);
+	SIGNAL cell_37x, cell_45x, cell_53x, cell_61x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(324, 10);
 	SIGNAL cell_38x, cell_46x, cell_54x, cell_62x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(382, 10);
 	SIGNAL cell_39x, cell_47x, cell_55x, cell_63x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(440, 10);
 	SIGNAL cell_40x, cell_48x, cell_56x, cell_64x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(498, 10);
@@ -603,7 +603,6 @@ BEGIN
 	--MARK: Process
 	-- display the grid of the board
 	RGB_Display : PROCESS (pixel_row, pixel_column)
-		-- RGB_Display : PROCESS (Vert_sync, Horiz_sync, pixel_row, pixel_column)
 	BEGIN
 		-- if-else statement (first long section is not needed <- square, not circle)
 		IF -- set the background
@@ -612,6 +611,8 @@ BEGIN
 			('0' & pixel_column >= margin_x + cell_size) AND
 			('0' & margin_y >= pixel_row) AND
 			('0' & pixel_row >= margin_y + cell_size)
+			-- ('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
+			-- ('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
 			THEN
 			-- 'background color' to white
 			Red <= background_color(2);
@@ -628,6 +629,440 @@ BEGIN
 			ELSIF
 				('0' & cell_02x <= pixel_column) AND ('0' & pixel_column <= cell_02x + cell_size) AND
 				('0' & cell_02y <= pixel_row) AND ('0' & pixel_row <= cell_02y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_03x <= pixel_column) AND ('0' & pixel_column <= cell_03x + cell_size) AND
+				('0' & cell_03y <= pixel_row) AND ('0' & pixel_row <= cell_03y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_04x <= pixel_column) AND ('0' & pixel_column <= cell_04x + cell_size) AND
+				('0' & cell_04y <= pixel_row) AND ('0' & pixel_row <= cell_04y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_05x <= pixel_column) AND ('0' & pixel_column <= cell_05x + cell_size) AND
+				('0' & cell_05y <= pixel_row) AND ('0' & pixel_row <= cell_05y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_06x <= pixel_column) AND ('0' & pixel_column <= cell_06x + cell_size) AND
+				('0' & cell_06y <= pixel_row) AND ('0' & pixel_row <= cell_06y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_07x <= pixel_column) AND ('0' & pixel_column <= cell_07x + cell_size) AND
+				('0' & cell_07y <= pixel_row) AND ('0' & pixel_row <= cell_07y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_08x <= pixel_column) AND ('0' & pixel_column <= cell_08x + cell_size) AND
+				('0' & cell_08y <= pixel_row) AND ('0' & pixel_row <= cell_08y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_09x <= pixel_column) AND ('0' & pixel_column <= cell_09x + cell_size) AND
+				('0' & cell_09y <= pixel_row) AND ('0' & pixel_row <= cell_09y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_10x <= pixel_column) AND ('0' & pixel_column <= cell_10x + cell_size) AND
+				('0' & cell_10y <= pixel_row) AND ('0' & pixel_row <= cell_10y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_11x <= pixel_column) AND ('0' & pixel_column <= cell_11x + cell_size) AND
+				('0' & cell_11y <= pixel_row) AND ('0' & pixel_row <= cell_11y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_12x <= pixel_column) AND ('0' & pixel_column <= cell_12x + cell_size) AND
+				('0' & cell_12y <= pixel_row) AND ('0' & pixel_row <= cell_12y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_13x <= pixel_column) AND ('0' & pixel_column <= cell_13x + cell_size) AND
+				('0' & cell_13y <= pixel_row) AND ('0' & pixel_row <= cell_13y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_14x <= pixel_column) AND ('0' & pixel_column <= cell_14x + cell_size) AND
+				('0' & cell_14y <= pixel_row) AND ('0' & pixel_row <= cell_14y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_15x <= pixel_column) AND ('0' & pixel_column <= cell_15x + cell_size) AND
+				('0' & cell_15y <= pixel_row) AND ('0' & pixel_row <= cell_15y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_16x <= pixel_column) AND ('0' & pixel_column <= cell_16x + cell_size) AND
+				('0' & cell_16y <= pixel_row) AND ('0' & pixel_row <= cell_16y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_17x <= pixel_column) AND ('0' & pixel_column <= cell_17x + cell_size) AND
+				('0' & cell_17y <= pixel_row) AND ('0' & pixel_row <= cell_17y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_18x <= pixel_column) AND ('0' & pixel_column <= cell_18x + cell_size) AND
+				('0' & cell_18y <= pixel_row) AND ('0' & pixel_row <= cell_18y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_19x <= pixel_column) AND ('0' & pixel_column <= cell_19x + cell_size) AND
+				('0' & cell_19y <= pixel_row) AND ('0' & pixel_row <= cell_19y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_20x <= pixel_column) AND ('0' & pixel_column <= cell_20x + cell_size) AND
+				('0' & cell_20y <= pixel_row) AND ('0' & pixel_row <= cell_20y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_21x <= pixel_column) AND ('0' & pixel_column <= cell_21x + cell_size) AND
+				('0' & cell_21y <= pixel_row) AND ('0' & pixel_row <= cell_21y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_22x <= pixel_column) AND ('0' & pixel_column <= cell_22x + cell_size) AND
+				('0' & cell_22y <= pixel_row) AND ('0' & pixel_row <= cell_22y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_23x <= pixel_column) AND ('0' & pixel_column <= cell_23x + cell_size) AND
+				('0' & cell_23y <= pixel_row) AND ('0' & pixel_row <= cell_23y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_24x <= pixel_column) AND ('0' & pixel_column <= cell_24x + cell_size) AND
+				('0' & cell_24y <= pixel_row) AND ('0' & pixel_row <= cell_24y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_25x <= pixel_column) AND ('0' & pixel_column <= cell_25x + cell_size) AND
+				('0' & cell_25y <= pixel_row) AND ('0' & pixel_row <= cell_25y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_26x <= pixel_column) AND ('0' & pixel_column <= cell_26x + cell_size) AND
+				('0' & cell_26y <= pixel_row) AND ('0' & pixel_row <= cell_26y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_27x <= pixel_column) AND ('0' & pixel_column <= cell_27x + cell_size) AND
+				('0' & cell_27y <= pixel_row) AND ('0' & pixel_row <= cell_27y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_28x <= pixel_column) AND ('0' & pixel_column <= cell_28x + cell_size) AND
+				('0' & cell_28y <= pixel_row) AND ('0' & pixel_row <= cell_28y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_29x <= pixel_column) AND ('0' & pixel_column <= cell_29x + cell_size) AND
+				('0' & cell_29y <= pixel_row) AND ('0' & pixel_row <= cell_29y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_30x <= pixel_column) AND ('0' & pixel_column <= cell_30x + cell_size) AND
+				('0' & cell_30y <= pixel_row) AND ('0' & pixel_row <= cell_30y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_31x <= pixel_column) AND ('0' & pixel_column <= cell_31x + cell_size) AND
+				('0' & cell_31y <= pixel_row) AND ('0' & pixel_row <= cell_31y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_32x <= pixel_column) AND ('0' & pixel_column <= cell_32x + cell_size) AND
+				('0' & cell_32y <= pixel_row) AND ('0' & pixel_row <= cell_32y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_33x <= pixel_column) AND ('0' & pixel_column <= cell_33x + cell_size) AND
+				('0' & cell_33y <= pixel_row) AND ('0' & pixel_row <= cell_33y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_34x <= pixel_column) AND ('0' & pixel_column <= cell_34x + cell_size) AND
+				('0' & cell_34y <= pixel_row) AND ('0' & pixel_row <= cell_34y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_35x <= pixel_column) AND ('0' & pixel_column <= cell_35x + cell_size) AND
+				('0' & cell_35y <= pixel_row) AND ('0' & pixel_row <= cell_35y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_36x <= pixel_column) AND ('0' & pixel_column <= cell_36x + cell_size) AND
+				('0' & cell_36y <= pixel_row) AND ('0' & pixel_row <= cell_36y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_37x <= pixel_column) AND ('0' & pixel_column <= cell_37x + cell_size) AND
+				('0' & cell_37y <= pixel_row) AND ('0' & pixel_row <= cell_37y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_38x <= pixel_column) AND ('0' & pixel_column <= cell_38x + cell_size) AND
+				('0' & cell_38y <= pixel_row) AND ('0' & pixel_row <= cell_38y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_39x <= pixel_column) AND ('0' & pixel_column <= cell_39x + cell_size) AND
+				('0' & cell_39y <= pixel_row) AND ('0' & pixel_row <= cell_39y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_40x <= pixel_column) AND ('0' & pixel_column <= cell_40x + cell_size) AND
+				('0' & cell_40y <= pixel_row) AND ('0' & pixel_row <= cell_40y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_41x <= pixel_column) AND ('0' & pixel_column <= cell_41x + cell_size) AND
+				('0' & cell_41y <= pixel_row) AND ('0' & pixel_row <= cell_41y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_42x <= pixel_column) AND ('0' & pixel_column <= cell_42x + cell_size) AND
+				('0' & cell_42y <= pixel_row) AND ('0' & pixel_row <= cell_42y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_43x <= pixel_column) AND ('0' & pixel_column <= cell_43x + cell_size) AND
+				('0' & cell_43y <= pixel_row) AND ('0' & pixel_row <= cell_43y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_44x <= pixel_column) AND ('0' & pixel_column <= cell_44x + cell_size) AND
+				('0' & cell_44y <= pixel_row) AND ('0' & pixel_row <= cell_44y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_45x <= pixel_column) AND ('0' & pixel_column <= cell_45x + cell_size) AND
+				('0' & cell_45y <= pixel_row) AND ('0' & pixel_row <= cell_45y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_46x <= pixel_column) AND ('0' & pixel_column <= cell_46x + cell_size) AND
+				('0' & cell_46y <= pixel_row) AND ('0' & pixel_row <= cell_46y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_47x <= pixel_column) AND ('0' & pixel_column <= cell_47x + cell_size) AND
+				('0' & cell_47y <= pixel_row) AND ('0' & pixel_row <= cell_47y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_48x <= pixel_column) AND ('0' & pixel_column <= cell_48x + cell_size) AND
+				('0' & cell_48y <= pixel_row) AND ('0' & pixel_row <= cell_48y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_49x <= pixel_column) AND ('0' & pixel_column <= cell_49x + cell_size) AND
+				('0' & cell_49y <= pixel_row) AND ('0' & pixel_row <= cell_49y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_50x <= pixel_column) AND ('0' & pixel_column <= cell_50x + cell_size) AND
+				('0' & cell_50y <= pixel_row) AND ('0' & pixel_row <= cell_50y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_51x <= pixel_column) AND ('0' & pixel_column <= cell_51x + cell_size) AND
+				('0' & cell_51y <= pixel_row) AND ('0' & pixel_row <= cell_51y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_52x <= pixel_column) AND ('0' & pixel_column <= cell_52x + cell_size) AND
+				('0' & cell_52y <= pixel_row) AND ('0' & pixel_row <= cell_52y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_53x <= pixel_column) AND ('0' & pixel_column <= cell_53x + cell_size) AND
+				('0' & cell_53y <= pixel_row) AND ('0' & pixel_row <= cell_53y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_54x <= pixel_column) AND ('0' & pixel_column <= cell_54x + cell_size) AND
+				('0' & cell_54y <= pixel_row) AND ('0' & pixel_row <= cell_54y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_55x <= pixel_column) AND ('0' & pixel_column <= cell_55x + cell_size) AND
+				('0' & cell_55y <= pixel_row) AND ('0' & pixel_row <= cell_55y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_56x <= pixel_column) AND ('0' & pixel_column <= cell_56x + cell_size) AND
+				('0' & cell_56y <= pixel_row) AND ('0' & pixel_row <= cell_56y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_57x <= pixel_column) AND ('0' & pixel_column <= cell_57x + cell_size) AND
+				('0' & cell_57y <= pixel_row) AND ('0' & pixel_row <= cell_57y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_58x <= pixel_column) AND ('0' & pixel_column <= cell_58x + cell_size) AND
+				('0' & cell_58y <= pixel_row) AND ('0' & pixel_row <= cell_58y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_59x <= pixel_column) AND ('0' & pixel_column <= cell_59x + cell_size) AND
+				('0' & cell_59y <= pixel_row) AND ('0' & pixel_row <= cell_59y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_60x <= pixel_column) AND ('0' & pixel_column <= cell_60x + cell_size) AND
+				('0' & cell_60y <= pixel_row) AND ('0' & pixel_row <= cell_60y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_61x <= pixel_column) AND ('0' & pixel_column <= cell_61x + cell_size) AND
+				('0' & cell_61y <= pixel_row) AND ('0' & pixel_row <= cell_61y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_62x <= pixel_column) AND ('0' & pixel_column <= cell_62x + cell_size) AND
+				('0' & cell_62y <= pixel_row) AND ('0' & pixel_row <= cell_62y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_63x <= pixel_column) AND ('0' & pixel_column <= cell_63x + cell_size) AND
+				('0' & cell_63y <= pixel_row) AND ('0' & pixel_row <= cell_63y + cell_size)
+				THEN
+				RED <= closed_cell_color(2);
+				Green <= closed_cell_color(1);
+				Blue <= closed_cell_color(0);
+			ELSIF
+				('0' & cell_64x <= pixel_column) AND ('0' & pixel_column <= cell_64x + cell_size) AND
+				('0' & cell_64y <= pixel_row) AND ('0' & pixel_row <= cell_64y + cell_size)
 				THEN
 				RED <= closed_cell_color(2);
 				Green <= closed_cell_color(1);
