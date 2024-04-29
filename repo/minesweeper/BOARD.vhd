@@ -83,7 +83,7 @@ ARCHITECTURE behavior OF board IS
 	SIGNAL cell_57y, cell_58y, cell_59y, cell_60y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(410, 10);
 	SIGNAL cell_61y, cell_62y, cell_63y, cell_64y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(410, 10);
 	--MARK: signal for bitmaps
-	TYPE number_bitmap IS ARRAY(0 TO 49) OF STD_LOGIC_VECTOR(0 TO 49);
+	TYPE number_bitmap IS ARRAY(0 TO 49, 0 TO 49) OF STD_LOGIC;
 	SIGNAL number_0 : number_bitmap := (
 		"00000000000000000001111111111111111110000000000000",
 		"00000000000000000011111111111111111111000000000000",
@@ -670,16 +670,40 @@ BEGIN
 				('0' & cell_03x <= pixel_column) AND ('0' & pixel_column <= cell_03x + cell_size) AND
 				('0' & cell_03y <= pixel_row) AND ('0' & pixel_row <= cell_03y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(0, 2) = 0 THEN -- closed cell
+					IF cell_flagged(0, 2) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_04x <= pixel_column) AND ('0' & pixel_column <= cell_04x + cell_size) AND
 				('0' & cell_04y <= pixel_row) AND ('0' & pixel_row <= cell_04y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(0, 3) = 0 THEN -- closed cell
+					IF cell_flagged(0, 3) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_05x <= pixel_column) AND ('0' & pixel_column <= cell_05x + cell_size) AND
 				('0' & cell_05y <= pixel_row) AND ('0' & pixel_row <= cell_05y + cell_size)
@@ -705,37 +729,103 @@ BEGIN
 				('0' & cell_08x <= pixel_column) AND ('0' & pixel_column <= cell_08x + cell_size) AND
 				('0' & cell_08y <= pixel_row) AND ('0' & pixel_row <= cell_08y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				-- first try to display the number_0 in the cell (50x50 pixel size)
+				-- iterate through the number_0 which is number_bitmap type
+				-- for each row in number_0, iterate through each bit in the row
+				-- if the bit is 1, set the color to the number_color
+				-- if the bit is 0, set the color to the background_color
+				FOR i IN 0 TO 49 LOOP
+					FOR j IN 0 TO 49 LOOP
+						IF number_0(i, j) = '1' THEN
+							RED <= '0';
+							Green <= '0';
+							Blue <= '1';
+						ELSE
+							RED <= '0';
+							Green <= '1';
+							Blue <= '1';
+						END IF;
+					END LOOP;
+				END LOOP;
+				-- RED <= opened_cell_color(2);
+				-- Green <= opened_cell_color(1);
+				-- Blue <= opened_cell_color(0);
 			ELSIF
 				('0' & cell_09x <= pixel_column) AND ('0' & pixel_column <= cell_09x + cell_size) AND
 				('0' & cell_09y <= pixel_row) AND ('0' & pixel_row <= cell_09y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(1, 0) = 0 THEN -- closed cell
+					IF cell_flagged(1, 0) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_10x <= pixel_column) AND ('0' & pixel_column <= cell_10x + cell_size) AND
 				('0' & cell_10y <= pixel_row) AND ('0' & pixel_row <= cell_10y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(1, 1) = 0 THEN -- closed cell
+					IF cell_flagged(1, 1) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_11x <= pixel_column) AND ('0' & pixel_column <= cell_11x + cell_size) AND
 				('0' & cell_11y <= pixel_row) AND ('0' & pixel_row <= cell_11y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(1, 2) = 0 THEN -- closed cell
+					IF cell_flagged(1, 2) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_12x <= pixel_column) AND ('0' & pixel_column <= cell_12x + cell_size) AND
 				('0' & cell_12y <= pixel_row) AND ('0' & pixel_row <= cell_12y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(1, 3) = 0 THEN -- closed cell
+					IF cell_flagged(1, 3) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_13x <= pixel_column) AND ('0' & pixel_column <= cell_13x + cell_size) AND
 				('0' & cell_13y <= pixel_row) AND ('0' & pixel_row <= cell_13y + cell_size)
