@@ -21,14 +21,14 @@ END board;
 -- 50 x 50 pixels for each square
 -- 640 x 480 (WIDTH = 640, HEIGHT = 480)
 -- |                   four pixels                 |
--- | <= 84 => | 01 02 03 04 05 06 07 08 | <= 84 => |
--- | <= 84 => | 09 10 11 12 13 14 15 16 | <= 84 => |
--- | <= 84 => | 17 18 19 20 21 22 23 24 | <= 84 => |
--- | <= 84 => | 25 26 27 28 29 30 31 32 | <= 84 => |
--- | <= 84 => | 33 34 35 36 37 38 39 40 | <= 84 => |
--- | <= 84 => | 41 42 43 44 45 46 47 48 | <= 84 => |
--- | <= 84 => | 49 50 51 52 53 54 55 56 | <= 84 => |
--- | <= 84 => | 57 58 59 60 61 62 63 64 | <= 84 => |
+-- | <= 84 => | 01 02 03 04 05 06 07 08 | <= 84 => | 00 01 02 03 04 05 06 07
+-- | <= 84 => | 09 10 11 12 13 14 15 16 | <= 84 => | 10 11 12 13 14 15 16 17
+-- | <= 84 => | 17 18 19 20 21 22 23 24 | <= 84 => | 20 21 22 23 24 25 26 27
+-- | <= 84 => | 25 26 27 28 29 30 31 32 | <= 84 => | 30 31 32 33 34 35 36 37
+-- | <= 84 => | 33 34 35 36 37 38 39 40 | <= 84 => | 40 41 42 43 44 45 46 47
+-- | <= 84 => | 41 42 43 44 45 46 47 48 | <= 84 => | 50 51 52 53 54 55 56 57
+-- | <= 84 => | 49 50 51 52 53 54 55 56 | <= 84 => | 60 61 62 63 64 65 66 67
+-- | <= 84 => | 57 58 59 60 61 62 63 64 | <= 84 => | 70 71 72 73 74 75 76 77
 -- |                   four pixels                 |
 
 -- w = h = 50
@@ -39,7 +39,7 @@ ARCHITECTURE behavior OF board IS
 	-- Video Display Signals
 	--MARK: signal for colors
 	SIGNAL background_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- white
-	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- black
+	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- white
 	SIGNAL opened_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- black
 	SIGNAL closed_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010"; -- green
 	SIGNAL flagged_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100"; -- red
@@ -607,10 +607,11 @@ BEGIN
 		-- if-else statement (first long section is not needed <- square, not circle)
 		IF -- set the background
 			-- margin_x <= pixel_column
-			('0' & margin_x >= pixel_column) AND
-			('0' & pixel_column >= margin_x + cell_size) AND
-			('0' & margin_y >= pixel_row) AND
-			('0' & pixel_row >= margin_y + cell_size)
+			-- FIXME : fix background logic
+			('0' & pixel_column <= margin_x) AND
+			('0' & pixel_column >= margin_x + margin_width) AND
+			('0' & pixel_row <= margin_y) AND
+			('0' & pixel_row >= margin_y + margin_height)
 			-- ('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
 			-- ('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
 			THEN
@@ -619,20 +620,52 @@ BEGIN
 			Green <= background_color(1);
 			Blue <= background_color(0);
 		ELSE -- if chains <- cell region
+			-- TODO: need to change to
+			-- IF |> !cell_status
+			-- ? closed
+			-- : (open |> !cell_flagged
+			-- 	? flagged
+			-- 	: (mine |> mine : number))
 			IF
-				('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
-				('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
+				(cell_01x <= pixel_column) AND (pixel_column <= cell_01x + cell_size) AND
+				(cell_01y <= pixel_row) AND (pixel_row <= cell_01y + cell_size)
+				-- ('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
+				-- ('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(0, 0) = 0 THEN -- closed cell
+					IF cell_flagged(0, 0) = 0 THEN -- not flagged
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE -- flagged
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_02x <= pixel_column) AND ('0' & pixel_column <= cell_02x + cell_size) AND
 				('0' & cell_02y <= pixel_row) AND ('0' & pixel_row <= cell_02y + cell_size)
 				THEN
-				RED <= closed_cell_color(2);
-				Green <= closed_cell_color(1);
-				Blue <= closed_cell_color(0);
+				IF cell_status(0, 1) = 0 THEN -- closed cell
+					IF cell_flagged(0, 1) = 0 THEN
+						RED <= '0';
+						Green <= '0';
+						Blue <= '0';
+					ELSE
+						RED <= flagged_cell_color(2);
+						Green <= flagged_cell_color(1);
+						Blue <= flagged_cell_color(0);
+					END IF;
+				ELSE -- open cell
+					RED <= opened_cell_color(2);
+					Green <= opened_cell_color(1);
+					Blue <= opened_cell_color(0);
+				END IF;
 			ELSIF
 				('0' & cell_03x <= pixel_column) AND ('0' & pixel_column <= cell_03x + cell_size) AND
 				('0' & cell_03y <= pixel_row) AND ('0' & pixel_row <= cell_03y + cell_size)
