@@ -61,6 +61,7 @@ ARCHITECTURE struct OF logic IS
 	--signal counter : unsigned(29 downto 0) := "000000000000000000000000000000";
 	signal button_state : std_logic_vector(3 downto 0) := "1111";
 	signal switch_state : std_logic := '0';
+	signal flag_count : INTEGER RANGE 0 TO 99;
 
 BEGIN
 	
@@ -181,8 +182,10 @@ BEGIN
 					-- flag
 					IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
 						cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
+						flag_count <= (flag_count - 1);
 					ELSE
 						cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
+						flag_count <= (flag_count + 1);
 					END IF;
 				END IF;
 			switch_state <= switches(2);
