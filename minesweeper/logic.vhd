@@ -61,6 +61,13 @@ ARCHITECTURE struct OF logic IS
 	--signal counter : unsigned(29 downto 0) := "000000000000000000000000000000";
 	signal button_state : std_logic_vector(3 downto 0) := "1111";
 	signal switch_state : std_logic := '0';
+	
+	type queue is array (0 to 20) of user_pos;
+
+	--signal neg_pos: user_pos := (-1, -1);
+	signal write_ptr: natural:=0; -- points to next open slot
+	signal expl_q: queue;
+	signal new_cell_pos: user_pos;
 
 BEGIN
 	
@@ -162,6 +169,45 @@ BEGIN
 					cell_status(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
 					IF (cell_value(cur_sel_cell(0), cur_sel_cell(1)) = 9) THEN -- hit a bomb
 						game_over <= '1'; -- lost
+					ELSIF (cell_value(cur_sel_cell(0), cur_sel_cell(1)) = 0) THEN -- space
+					-- initialize
+					  write_ptr <= 0;
+						--for l in 0 to 63 loop
+							--expl_q(l) <= neg_pos;
+						--end loop;
+					  expl_q(write_ptr) <= cur_sel_cell;
+					  write_ptr <= write_ptr + 1;
+					  
+					  
+					  for l in 0 to 20 loop
+						  if l<write_ptr then
+								for i in -1 to 1 loop
+									 for j in -1 to 1 loop
+										-- for every adjacent cell, check if blank
+										if (expl_q(l)(0)+i>=0 and expl_q(l)(0)+i<=7) and (expl_q(l)(1)+j>=0 and expl_q(l)(1)+j<=7) then -- in range
+											  new_cell_pos(0)<=expl_q(l)(0)+i;
+											  new_cell_pos(1)<=expl_q(l)(1)+j;
+
+												if cell_status(new_cell_pos(0), new_cell_pos(1))=0 then -- it's closed, open it
+													 cell_status(new_cell_pos(0), new_cell_pos(1))<=1;
+
+													 if cell_value(new_cell_pos(0), new_cell_pos(1)) = 0 then -- blank, enter to queue to open further
+														  expl_q(write_ptr) <= cur_sel_cell;
+														  write_ptr <= write_ptr+1;
+													 else -- guaranteed to be a number, just open it
+															expl_q(write_ptr) <= expl_q(write_ptr);
+													 end if;
+												 else
+													null;
+												end if;
+											else
+												null;
+										  end if;
+									 end loop;
+								end loop;
+							end if;
+					  end loop;
+		  
 					END IF;
 
 					FOR i IN 0 TO 7 LOOP -- Column
