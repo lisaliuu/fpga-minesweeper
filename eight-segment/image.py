@@ -14,7 +14,7 @@ with open("export.txt", "w") as f:
         "Eight-segment-7.bmp",
         "Eight-segment-8.bmp",
         "Eight-segment-9.bmp",
-        "Eight-segment-empty.bmp",]
+        "bomb.bmp",]
     for image in images:
         img = Image.open(image)
         print(f"Image: {image}")
