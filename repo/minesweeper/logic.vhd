@@ -4,6 +4,13 @@
 -- determine the status of the cell
 -- input: IN ports <- user input (buttons, switches)
 -- output
+PACKAGE board_layout_pkg IS
+	subtype small_range is natural range 0 to 10;
+	subtype smallest_range is natural range 0 to 1;
+	type board_size is array (0 to 7, 0 to 7) of small_range;
+	type board_bool is array (0 to 7, 0 to 7) of smallest_range;
+	type user_pos is array(0 TO 1) of small_range;
+END board_layout_pkg;
 
 LIBRARY work;
 USE work.ALL;
@@ -26,15 +33,14 @@ ENTITY logic IS
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos;
-		test:OUT std_logic
+		cur_sel_cell : INOUT user_pos
 	);
 END logic;
 
 
 
 ARCHITECTURE struct OF logic IS
-
+-- SINGAL cell_status_signal
 	COMPONENT board_generator
 			
 		PORT(	CLOCK_50, start_randomizer 	: in std_logic;
@@ -151,7 +157,6 @@ BEGIN
 		end if;
 		if (switches(2)='1') THEN
 			-- flag
-			test<='1';
 			IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
 				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
 				flag_count <= (flag_count - 1);
