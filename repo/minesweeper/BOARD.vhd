@@ -597,8 +597,8 @@ ARCHITECTURE behavior OF board IS
 		"00000000000111111111111111111110000000000000000000");
 
 	PROCEDURE CellDisplay (
-		SIGNAL cell_x : IN INTEGER;
-		SIGNAL cell_y : IN INTEGER
+		cell_x : IN INTEGER;
+		cell_y : IN INTEGER
 	) IS
 		VARIABLE pos_y : INTEGER;
 		VARIABLE pos_x : INTEGER;
@@ -618,7 +618,7 @@ ARCHITECTURE behavior OF board IS
 			pos_y := CONV_INTEGER(pixel_row - cell_08y);
 
 			CASE cell_value(cell_x, cell_y) IS
-				WHEN '0' =>
+				WHEN 0 =>
 					IF number_0(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -628,7 +628,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '1' =>
+				WHEN 1 =>
 					IF number_1(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -638,7 +638,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '2' =>
+				WHEN 2 =>
 					IF number_2(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -648,7 +648,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '3' =>
+				WHEN 3 =>
 					IF number_3(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -658,7 +658,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '4' =>
+				WHEN 4 =>
 					IF number_4(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -668,7 +668,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '5' =>
+				WHEN 5 =>
 					IF number_5(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -678,7 +678,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '6' =>
+				WHEN 6 =>
 					IF number_6(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -688,7 +688,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '7' =>
+				WHEN 7 =>
 					IF number_7(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
@@ -698,7 +698,7 @@ ARCHITECTURE behavior OF board IS
 						Green <= background_color(1);
 						Blue <= background_color(0);
 					END IF;
-				WHEN '8' =>
+				WHEN 8 =>
 					IF number_8(pos_y, pos_x) = '1' THEN
 						Red <= opened_cell_color(2);
 						Green <= opened_cell_color(1);
