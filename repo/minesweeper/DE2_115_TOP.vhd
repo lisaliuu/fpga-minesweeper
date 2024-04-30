@@ -123,7 +123,7 @@ architecture Structure of DE2_115_TOP is
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos
+		cell_cursor : INOUT user_pos
 	);
 	end component;
 	COMPONENT board IS
@@ -134,7 +134,8 @@ architecture Structure of DE2_115_TOP is
 			-- 
 			cell_status : IN board_bool;
 			cell_flagged : IN board_bool;
-			cell_value : IN board_size
+			cell_value : IN board_size;
+			-- cell_cursor : IN user_pos
 		);
 	END COMPONENT;
 
@@ -179,7 +180,7 @@ begin
 		cell_status => cell_status_signal,
 		cell_flagged => cell_flagged_signal,
 		cell_value => cell_value_signal
-		-- cur_sel_cell : INOUT user_pos; -- <- I don't think this is needed
+		-- cell_cursor : INOUT user_pos; -- <- I don't think this is needed
 	);
 	
 	VGA_R(6 DOWNTO 0) <= "0000000";

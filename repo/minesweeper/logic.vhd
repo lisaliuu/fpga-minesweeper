@@ -26,7 +26,7 @@ ENTITY logic IS
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos
+		cell_cursor : INOUT user_pos
 	);
 END logic;
 
@@ -75,7 +75,7 @@ BEGIN
 		VGA_UPDATE <= '1';
 		IF (switches(0) = '1') THEN
 			first_pressed <= '0';
-			cur_sel_cell <= (0, 0);
+			cell_cursor <= (0, 0);
 			FOR i IN 0 TO 7 LOOP -- Column
 				FOR j IN 0 TO 7 LOOP -- Row
 					cell_status(i, j) <= 0;
@@ -88,34 +88,34 @@ BEGIN
 		-- ←↑↓→
 		IF (buttons(0)='0') THEN
 		-- go left
-			IF (cur_sel_cell(0) > 0) THEN
-				cur_sel_cell(0) <= cur_sel_cell(0) - 1;
+			IF (cell_cursor(0) > 0) THEN
+				cell_cursor(0) <= cell_cursor(0) - 1;
 			ELSE 
-				cur_sel_cell(0) <= 7;
+				cell_cursor(0) <= 7;
 			END IF;
 			
 		-- go right
 		ELsIF (buttons(1)='0') THEN
-			IF (cur_sel_cell(0) < 7) THEN
-				cur_sel_cell(0) <= cur_sel_cell(0) + 1;
+			IF (cell_cursor(0) < 7) THEN
+				cell_cursor(0) <= cell_cursor(0) + 1;
 			ELSE 
-				cur_sel_cell(0) <= 0;
+				cell_cursor(0) <= 0;
 			END IF;
 			
 		-- go down
 		ELsIF (buttons(2)='0') THEN
-			IF (cur_sel_cell(1) < 7) THEN
-				cur_sel_cell(1) <= cur_sel_cell(1) + 1;
+			IF (cell_cursor(1) < 7) THEN
+				cell_cursor(1) <= cell_cursor(1) + 1;
 			ELSE 
-				cur_sel_cell(1) <= 0;
+				cell_cursor(1) <= 0;
 			END IF;
 			
 		-- go up
 		ELsIF (buttons(3)='0') THEN
-			IF (cur_sel_cell(1) > 0) THEN
-				cur_sel_cell(1) <= cur_sel_cell(1) - 1;
+			IF (cell_cursor(1) > 0) THEN
+				cell_cursor(1) <= cell_cursor(1) - 1;
 			ELSE 
-				cur_sel_cell(1) <= 7;
+				cell_cursor(1) <= 7;
 			END IF;
 		END IF;
 
@@ -123,14 +123,14 @@ BEGIN
 			-- click (closed -> open)
 			IF (first_pressed='0') THEN
 				--first press
-				ban_position <= cur_sel_cell;
+				ban_position <= cell_cursor;
 				-- board is now partially open
 				first_pressed <= '1';
 				start_gen <='1';
 			-- ELSE 
 			elsif finished_gen = '1' then
-				cell_status(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
-				IF (cell_value(cur_sel_cell(0), cur_sel_cell(1)) = 9) THEN -- hit a bomb
+				cell_status(cell_cursor(0), cell_cursor(1)) <= 1;
+				IF (cell_value(cell_cursor(0), cell_cursor(1)) = 9) THEN -- hit a bomb
 					game_over <= '1'; -- lost
 				END IF;
 
@@ -148,10 +148,10 @@ BEGIN
 		end if;
 		if (switches(2)='1') THEN
 			-- flag
-			IF(cell_flagged(cur_sel_cell(0), cur_sel_cell(1))=0) THEN
-				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
+			IF(cell_flagged(cell_cursor(0), cell_cursor(1))=0) THEN
+				cell_flagged(cell_cursor(0), cell_cursor(1)) <= 1;
 			ELSE
-				cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
+				cell_flagged(cell_cursor(0), cell_cursor(1)) <= 0;
 			END IF;
 		END IF;
 	END PROCESS user_input;

@@ -14,7 +14,8 @@ ENTITY board IS
 		-- signals from logic
 		cell_status : IN board_bool;
 		cell_flagged : IN board_bool;
-		cell_value : IN board_size
+		cell_value : IN board_size;
+		-- cell_cursor : IN user_pos
 	);
 END board;
 
@@ -40,15 +41,18 @@ ARCHITECTURE behavior OF board IS
 	-- Video Display Signals
 	--MARK: signal for colors
 	SIGNAL background_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- white
-	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111"; -- white
+	SIGNAL grid_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- black
 	SIGNAL opened_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "000"; -- black
 	SIGNAL closed_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "010"; -- green
 	SIGNAL flagged_cell_color : STD_LOGIC_VECTOR(2 DOWNTO 0) := "100"; -- red
+	--MARK: signal for display
+	SIGNAL display_width : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(640, 10);
+	SIGNAL display_height : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(480, 10);
 	--MARK: signal for background
-	SIGNAL margin_width, margin_height : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(472, 10);
-	SIGNAL margin_x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(91, 10);
+	SIGNAL margin_width, margin_height : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(472, 10); -- 50*8+8*9
+	SIGNAL margin_x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(92, 10);
 	SIGNAL margin_y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(4, 10);
-	--MARK: signal for cells
+	--MARK: signal for cells (x)
 	SIGNAL cell_size : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(50, 10);
 	SIGNAL cell_01x, cell_09x, cell_17x, cell_25x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(92, 10);
 	SIGNAL cell_02x, cell_10x, cell_18x, cell_26x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(150, 10);
@@ -66,7 +70,7 @@ ARCHITECTURE behavior OF board IS
 	SIGNAL cell_38x, cell_46x, cell_54x, cell_62x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(382, 10);
 	SIGNAL cell_39x, cell_47x, cell_55x, cell_63x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(440, 10);
 	SIGNAL cell_40x, cell_48x, cell_56x, cell_64x : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(498, 10);
-
+	--MARK: signal for cells (y)
 	SIGNAL cell_01y, cell_02y, cell_03y, cell_04y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(4, 10);
 	SIGNAL cell_05y, cell_06y, cell_07y, cell_08y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(4, 10);
 	SIGNAL cell_09y, cell_10y, cell_11y, cell_12y : STD_LOGIC_VECTOR(9 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(62, 10);
@@ -730,31 +734,34 @@ BEGIN
 	BEGIN
 		-- if-else statement (first long section is not needed <- square, not circle)
 		IF -- set the background
-			-- margin_x <= pixel_column
-			-- FIXME : fix background logic
-			('0' & pixel_column <= margin_x) AND
-			('0' & pixel_column >= margin_x + margin_width) AND
-			('0' & pixel_row <= margin_y) AND
-			('0' & pixel_row >= margin_y + margin_height)
-			-- ('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
-			-- ('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
+			-- TODO: check this background color logic
+			-- 1.
+			(pixel_column < margin_x) AND
+			(pixel_column > margin_x + margin_width) AND
+			(pixel_row < margin_y) AND
+			(pixel_row > margin_y + margin_height)
+			-- -- 2.
+			-- ('0' & pixel_column < 92) AND ('0' & pixel_column > 548) AND
+			-- ('0' & pixel_row < 4) AND ('0' & pixel_row > 475)
+			-- -- 3.
+			-- ('0' & pixel_column < cell_01x) AND ('0' & pixel_column >= display_width - cell_01x) AND
+			-- ('0' & pixel_row < cell_01y) AND ('0' & pixel_row > display_height - cell_01y)
 			THEN
 			-- 'background color' to white
 			Red <= background_color(2);
 			Green <= background_color(1);
 			Blue <= background_color(0);
 		ELSE -- if chains <- cell region
-			-- TODO: need to change to
-			-- IF |> !cell_status
-			-- ? closed
-			-- : (open |> !cell_flagged
-			-- 	? flagged
-			-- 	: (mine |> mine : number))
-			IF
-				(cell_01x <= pixel_column) AND (pixel_column <= cell_01x + cell_size) AND
-				(cell_01y <= pixel_row) AND (pixel_row <= cell_01y + cell_size)
-				-- ('0' & cell_01x <= pixel_column) AND ('0' & pixel_column <= cell_01x + cell_size) AND
-				-- ('0' & cell_01y <= pixel_row) AND ('0' & pixel_row <= cell_01y + cell_size)
+			IF --TODO: check this w/ & w/o `'0' &``
+				-- 1.
+				(cell_01x <= pixel_column) AND (pixel_column < cell_01x + cell_size) AND
+				(cell_01y <= pixel_row) AND (pixel_row < cell_01y + cell_size)
+				-- -- 2.
+				-- ('0' & cell_01x <= pixel_column) AND ('0' & pixel_column < cell_01x + cell_size) AND
+				-- ('0' & cell_01y <= pixel_row) AND ('0' & pixel_row < cell_01y + cell_size)
+				-- -- 3.
+				-- ('0' & pixel_column >= cell_01x) AND ('0' & pixel_column < cell_01x + cell_size) AND
+				-- ('0' & pixel_row >= cell_01y) AND ('0' & pixel_row < cell_01y + cell_size)
 				THEN
 				CellDisplay(0, 0);
 			ELSIF
@@ -1079,14 +1086,5 @@ BEGIN
 			END IF;
 		END IF;
 	END PROCESS RGB_Display;
-
-	-- Update_cell : PROCESS
-	-- 	-- rising_edge(init_board)
-	-- BEGIN
-	-- 	IF Vert_sync = '1' AND rising_edge(key_press) THEN
-	-- 		-- FIXME: logic to update the cell
-	-- 		-- (maybe logic isn't needed)
-	-- 	END IF;
-	-- END PROCESS Update_cell;
 
 END behavior;
