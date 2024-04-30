@@ -602,7 +602,9 @@ ARCHITECTURE behavior OF board IS
 
 	PROCEDURE CellDisplay (
 		cell_x : IN INTEGER;
-		cell_y : IN INTEGER
+		cell_y : IN INTEGER;
+		cell_nx : STD_LOGIC_VECTOR(9 DOWNTO 0);
+		cell_ny : STD_LOGIC_VECTOR(9 DOWNTO 0)
 	) IS
 		VARIABLE pos_y : INTEGER;
 		VARIABLE pos_x : INTEGER;
@@ -618,8 +620,8 @@ ARCHITECTURE behavior OF board IS
 				Blue <= flagged_cell_color(0);
 			END IF;
 		ELSE -- open cell (black)
-			pos_x := CONV_INTEGER(pixel_column - cell_08x);
-			pos_y := CONV_INTEGER(pixel_row - cell_08y);
+			pos_x := CONV_INTEGER(pixel_column - cell_nx);
+			pos_y := CONV_INTEGER(pixel_row - cell_ny);
 
 			CASE cell_value(cell_x, cell_y) IS
 				WHEN 0 =>
@@ -725,11 +727,11 @@ ARCHITECTURE behavior OF board IS
 			END CASE;
 		END IF;
 		-- Teyon made user position show as magenta (overrides showing flag like this)
-		IF cell_x = cell_userb(0) and cell_y = cell_userb(1) then
+		IF cell_x = cell_userb(0) AND cell_y = cell_userb(1) THEN
 			Red <= '1';
 			Green <= '0';
 			Blue <= '1';
-		end if;
+		END IF;
 	END CellDisplay;
 BEGIN
 	--MARK: Process
@@ -769,322 +771,322 @@ BEGIN
 				-- ('0' & pixel_column >= cell_01x) AND ('0' & pixel_column < cell_01x + cell_size) AND
 				-- ('0' & pixel_row >= cell_01y) AND ('0' & pixel_row < cell_01y + cell_size)
 				THEN
-				CellDisplay(0, 0);
+				CellDisplay(0, 0, cell_01x, cell_01y);
 			ELSIF
 				('0' & cell_02x <= pixel_column) AND ('0' & pixel_column <= cell_02x + cell_size) AND
 				('0' & cell_02y <= pixel_row) AND ('0' & pixel_row <= cell_02y + cell_size)
 				THEN
-				CellDisplay(0, 1);
+				CellDisplay(0, 1, cell_02x, cell_02y);
 			ELSIF
 				('0' & cell_03x <= pixel_column) AND ('0' & pixel_column <= cell_03x + cell_size) AND
 				('0' & cell_03y <= pixel_row) AND ('0' & pixel_row <= cell_03y + cell_size)
 				THEN
-				CellDisplay(0, 2);
+				CellDisplay(0, 2, cell_03x, cell_03y);
 			ELSIF
 				('0' & cell_04x <= pixel_column) AND ('0' & pixel_column <= cell_04x + cell_size) AND
 				('0' & cell_04y <= pixel_row) AND ('0' & pixel_row <= cell_04y + cell_size)
 				THEN
-				CellDisplay(0, 3);
+				CellDisplay(0, 3, cell_04x, cell_04y);
 			ELSIF
 				('0' & cell_05x <= pixel_column) AND ('0' & pixel_column <= cell_05x + cell_size) AND
 				('0' & cell_05y <= pixel_row) AND ('0' & pixel_row <= cell_05y + cell_size)
 				THEN
-				CellDisplay(0, 4);
+				CellDisplay(0, 4, cell_05x, cell_05y);
 			ELSIF
 				('0' & cell_06x <= pixel_column) AND ('0' & pixel_column <= cell_06x + cell_size) AND
 				('0' & cell_06y <= pixel_row) AND ('0' & pixel_row <= cell_06y + cell_size)
 				THEN
-				CellDisplay(0, 5);
+				CellDisplay(0, 5, cell_06x, cell_06y);
 			ELSIF
 				('0' & cell_07x <= pixel_column) AND ('0' & pixel_column <= cell_07x + cell_size) AND
 				('0' & cell_07y <= pixel_row) AND ('0' & pixel_row <= cell_07y + cell_size)
 				THEN
-				CellDisplay(0, 6);
+				CellDisplay(0, 6, cell_07x, cell_07y);
 			ELSIF
 				('0' & cell_08x <= pixel_column) AND ('0' & pixel_column <= cell_08x + cell_size) AND
 				('0' & cell_08y <= pixel_row) AND ('0' & pixel_row <= cell_08y + cell_size)
 				THEN
-				CellDisplay(0, 7);
+				CellDisplay(0, 7, cell_08x, cell_08y);
 			ELSIF
 				('0' & cell_09x <= pixel_column) AND ('0' & pixel_column <= cell_09x + cell_size) AND
 				('0' & cell_09y <= pixel_row) AND ('0' & pixel_row <= cell_09y + cell_size)
 				THEN
-				CellDisplay(1, 0);
+				CellDisplay(1, 0, cell_09x, cell_09y);
 			ELSIF
 				('0' & cell_10x <= pixel_column) AND ('0' & pixel_column <= cell_10x + cell_size) AND
 				('0' & cell_10y <= pixel_row) AND ('0' & pixel_row <= cell_10y + cell_size)
 				THEN
-				CellDisplay(1, 1);
+				CellDisplay(1, 1, cell_10x, cell_10y);
 			ELSIF
 				('0' & cell_11x <= pixel_column) AND ('0' & pixel_column <= cell_11x + cell_size) AND
 				('0' & cell_11y <= pixel_row) AND ('0' & pixel_row <= cell_11y + cell_size)
 				THEN
-				CellDisplay(1, 2);
+				CellDisplay(1, 2, cell_11x, cell_11y);
 			ELSIF
 				('0' & cell_12x <= pixel_column) AND ('0' & pixel_column <= cell_12x + cell_size) AND
 				('0' & cell_12y <= pixel_row) AND ('0' & pixel_row <= cell_12y + cell_size)
 				THEN
-				CellDisplay(1, 3);
+				CellDisplay(1, 3, cell_12x, cell_12y);
 			ELSIF
 				('0' & cell_13x <= pixel_column) AND ('0' & pixel_column <= cell_13x + cell_size) AND
 				('0' & cell_13y <= pixel_row) AND ('0' & pixel_row <= cell_13y + cell_size)
 				THEN
-				CellDisplay(1, 4);
+				CellDisplay(1, 4, cell_13x, cell_13y);
 			ELSIF
 				('0' & cell_14x <= pixel_column) AND ('0' & pixel_column <= cell_14x + cell_size) AND
 				('0' & cell_14y <= pixel_row) AND ('0' & pixel_row <= cell_14y + cell_size)
 				THEN
-				CellDisplay(1, 5);
+				CellDisplay(1, 5, cell_14x, cell_14y);
 			ELSIF
 				('0' & cell_15x <= pixel_column) AND ('0' & pixel_column <= cell_15x + cell_size) AND
 				('0' & cell_15y <= pixel_row) AND ('0' & pixel_row <= cell_15y + cell_size)
 				THEN
-				CellDisplay(1, 6);
+				CellDisplay(1, 6, cell_15x, cell_15y);
 			ELSIF
 				('0' & cell_16x <= pixel_column) AND ('0' & pixel_column <= cell_16x + cell_size) AND
 				('0' & cell_16y <= pixel_row) AND ('0' & pixel_row <= cell_16y + cell_size)
 				THEN
-				CellDisplay(1, 7);
+				CellDisplay(1, 7, cell_16x, cell_16y);
 			ELSIF
 				('0' & cell_17x <= pixel_column) AND ('0' & pixel_column <= cell_17x + cell_size) AND
 				('0' & cell_17y <= pixel_row) AND ('0' & pixel_row <= cell_17y + cell_size)
 				THEN
-				CellDisplay(2, 0);
+				CellDisplay(2, 0, cell_17x, cell_17y);
 			ELSIF
 				('0' & cell_18x <= pixel_column) AND ('0' & pixel_column <= cell_18x + cell_size) AND
 				('0' & cell_18y <= pixel_row) AND ('0' & pixel_row <= cell_18y + cell_size)
 				THEN
-				CellDisplay(2, 1);
+				CellDisplay(2, 1, cell_18x, cell_18y);
 			ELSIF
 				('0' & cell_19x <= pixel_column) AND ('0' & pixel_column <= cell_19x + cell_size) AND
 				('0' & cell_19y <= pixel_row) AND ('0' & pixel_row <= cell_19y + cell_size)
 				THEN
-				CellDisplay(2, 2);
+				CellDisplay(2, 2, cell_19x, cell_19y);
 			ELSIF
 				('0' & cell_20x <= pixel_column) AND ('0' & pixel_column <= cell_20x + cell_size) AND
 				('0' & cell_20y <= pixel_row) AND ('0' & pixel_row <= cell_20y + cell_size)
 				THEN
-				CellDisplay(2, 3);
+				CellDisplay(2, 3, cell_20x, cell_20y);
 			ELSIF
 				('0' & cell_21x <= pixel_column) AND ('0' & pixel_column <= cell_21x + cell_size) AND
 				('0' & cell_21y <= pixel_row) AND ('0' & pixel_row <= cell_21y + cell_size)
 				THEN
-				CellDisplay(2, 4);
+				CellDisplay(2, 4, cell_21x, cell_21y);
 			ELSIF
 				('0' & cell_22x <= pixel_column) AND ('0' & pixel_column <= cell_22x + cell_size) AND
 				('0' & cell_22y <= pixel_row) AND ('0' & pixel_row <= cell_22y + cell_size)
 				THEN
-				CellDisplay(2, 5);
+				CellDisplay(2, 5, cell_22x, cell_22y);
 			ELSIF
 				('0' & cell_23x <= pixel_column) AND ('0' & pixel_column <= cell_23x + cell_size) AND
 				('0' & cell_23y <= pixel_row) AND ('0' & pixel_row <= cell_23y + cell_size)
 				THEN
-				CellDisplay(2, 6);
+				CellDisplay(2, 6, cell_23x, cell_23y);
 			ELSIF
 				('0' & cell_24x <= pixel_column) AND ('0' & pixel_column <= cell_24x + cell_size) AND
 				('0' & cell_24y <= pixel_row) AND ('0' & pixel_row <= cell_24y + cell_size)
 				THEN
-				CellDisplay(2, 7);
+				CellDisplay(2, 7, cell_24x, cell_24y);
 			ELSIF
 				('0' & cell_25x <= pixel_column) AND ('0' & pixel_column <= cell_25x + cell_size) AND
 				('0' & cell_25y <= pixel_row) AND ('0' & pixel_row <= cell_25y + cell_size)
 				THEN
-				CellDisplay(3, 0);
+				CellDisplay(3, 0, cell_25x, cell_25y);
 			ELSIF
 				('0' & cell_26x <= pixel_column) AND ('0' & pixel_column <= cell_26x + cell_size) AND
 				('0' & cell_26y <= pixel_row) AND ('0' & pixel_row <= cell_26y + cell_size)
 				THEN
-				CellDisplay(3, 1);
+				CellDisplay(3, 1, cell_26x, cell_26y);
 			ELSIF
 				('0' & cell_27x <= pixel_column) AND ('0' & pixel_column <= cell_27x + cell_size) AND
 				('0' & cell_27y <= pixel_row) AND ('0' & pixel_row <= cell_27y + cell_size)
 				THEN
-				CellDisplay(3, 2);
+				CellDisplay(3, 2, cell_27x, cell_27y);
 			ELSIF
 				('0' & cell_28x <= pixel_column) AND ('0' & pixel_column <= cell_28x + cell_size) AND
 				('0' & cell_28y <= pixel_row) AND ('0' & pixel_row <= cell_28y + cell_size)
 				THEN
-				CellDisplay(3, 3);
+				CellDisplay(3, 3, cell_28x, cell_28y);
 			ELSIF
 				('0' & cell_29x <= pixel_column) AND ('0' & pixel_column <= cell_29x + cell_size) AND
 				('0' & cell_29y <= pixel_row) AND ('0' & pixel_row <= cell_29y + cell_size)
 				THEN
-				CellDisplay(3, 4);
+				CellDisplay(3, 4, cell_29x, cell_29y);
 			ELSIF
 				('0' & cell_30x <= pixel_column) AND ('0' & pixel_column <= cell_30x + cell_size) AND
 				('0' & cell_30y <= pixel_row) AND ('0' & pixel_row <= cell_30y + cell_size)
 				THEN
-				CellDisplay(3, 5);
+				CellDisplay(3, 5, cell_30x, cell_30y);
 			ELSIF
 				('0' & cell_31x <= pixel_column) AND ('0' & pixel_column <= cell_31x + cell_size) AND
 				('0' & cell_31y <= pixel_row) AND ('0' & pixel_row <= cell_31y + cell_size)
 				THEN
-				CellDisplay(3, 6);
+				CellDisplay(3, 6, cell_31x, cell_31y);
 			ELSIF
 				('0' & cell_32x <= pixel_column) AND ('0' & pixel_column <= cell_32x + cell_size) AND
 				('0' & cell_32y <= pixel_row) AND ('0' & pixel_row <= cell_32y + cell_size)
 				THEN
-				CellDisplay(3, 7);
+				CellDisplay(3, 7, cell_32x, cell_32y);
 			ELSIF
 				('0' & cell_33x <= pixel_column) AND ('0' & pixel_column <= cell_33x + cell_size) AND
 				('0' & cell_33y <= pixel_row) AND ('0' & pixel_row <= cell_33y + cell_size)
 				THEN
-				CellDisplay(4, 0);
+				CellDisplay(4, 0, cell_33x, cell_33y);
 			ELSIF
 				('0' & cell_34x <= pixel_column) AND ('0' & pixel_column <= cell_34x + cell_size) AND
 				('0' & cell_34y <= pixel_row) AND ('0' & pixel_row <= cell_34y + cell_size)
 				THEN
-				CellDisplay(4, 1);
+				CellDisplay(4, 1, cell_34x, cell_34y);
 			ELSIF
 				('0' & cell_35x <= pixel_column) AND ('0' & pixel_column <= cell_35x + cell_size) AND
 				('0' & cell_35y <= pixel_row) AND ('0' & pixel_row <= cell_35y + cell_size)
 				THEN
-				CellDisplay(4, 2);
+				CellDisplay(4, 2, cell_35x, cell_35y);
 			ELSIF
 				('0' & cell_36x <= pixel_column) AND ('0' & pixel_column <= cell_36x + cell_size) AND
 				('0' & cell_36y <= pixel_row) AND ('0' & pixel_row <= cell_36y + cell_size)
 				THEN
-				CellDisplay(4, 3);
+				CellDisplay(4, 3, cell_36x, cell_36y);
 			ELSIF
 				('0' & cell_37x <= pixel_column) AND ('0' & pixel_column <= cell_37x + cell_size) AND
 				('0' & cell_37y <= pixel_row) AND ('0' & pixel_row <= cell_37y + cell_size)
 				THEN
-				CellDisplay(4, 4);
+				CellDisplay(4, 4, cell_37x, cell_37y);
 			ELSIF
 				('0' & cell_38x <= pixel_column) AND ('0' & pixel_column <= cell_38x + cell_size) AND
 				('0' & cell_38y <= pixel_row) AND ('0' & pixel_row <= cell_38y + cell_size)
 				THEN
-				CellDisplay(4, 5);
+				CellDisplay(4, 5, cell_38x, cell_38y);
 			ELSIF
 				('0' & cell_39x <= pixel_column) AND ('0' & pixel_column <= cell_39x + cell_size) AND
 				('0' & cell_39y <= pixel_row) AND ('0' & pixel_row <= cell_39y + cell_size)
 				THEN
-				CellDisplay(4, 6);
+				CellDisplay(4, 6, cell_39x, cell_39y);
 			ELSIF
 				('0' & cell_40x <= pixel_column) AND ('0' & pixel_column <= cell_40x + cell_size) AND
 				('0' & cell_40y <= pixel_row) AND ('0' & pixel_row <= cell_40y + cell_size)
 				THEN
-				CellDisplay(4, 7);
+				CellDisplay(4, 7, cell_40x, cell_40y);
 			ELSIF
 				('0' & cell_41x <= pixel_column) AND ('0' & pixel_column <= cell_41x + cell_size) AND
 				('0' & cell_41y <= pixel_row) AND ('0' & pixel_row <= cell_41y + cell_size)
 				THEN
-				CellDisplay(5, 0);
+				CellDisplay(5, 0, cell_41x, cell_41y);
 			ELSIF
 				('0' & cell_42x <= pixel_column) AND ('0' & pixel_column <= cell_42x + cell_size) AND
 				('0' & cell_42y <= pixel_row) AND ('0' & pixel_row <= cell_42y + cell_size)
 				THEN
-				CellDisplay(5, 1);
+				CellDisplay(5, 1, cell_42x, cell_42y);
 			ELSIF
 				('0' & cell_43x <= pixel_column) AND ('0' & pixel_column <= cell_43x + cell_size) AND
 				('0' & cell_43y <= pixel_row) AND ('0' & pixel_row <= cell_43y + cell_size)
 				THEN
-				CellDisplay(5, 2);
+				CellDisplay(5, 2, cell_43x, cell_43y);
 			ELSIF
 				('0' & cell_44x <= pixel_column) AND ('0' & pixel_column <= cell_44x + cell_size) AND
 				('0' & cell_44y <= pixel_row) AND ('0' & pixel_row <= cell_44y + cell_size)
 				THEN
-				CellDisplay(5, 3);
+				CellDisplay(5, 3, cell_44x, cell_44y);
 			ELSIF
 				('0' & cell_45x <= pixel_column) AND ('0' & pixel_column <= cell_45x + cell_size) AND
 				('0' & cell_45y <= pixel_row) AND ('0' & pixel_row <= cell_45y + cell_size)
 				THEN
-				CellDisplay(5, 4);
+				CellDisplay(5, 4, cell_45x, cell_45y);
 			ELSIF
 				('0' & cell_46x <= pixel_column) AND ('0' & pixel_column <= cell_46x + cell_size) AND
 				('0' & cell_46y <= pixel_row) AND ('0' & pixel_row <= cell_46y + cell_size)
 				THEN
-				CellDisplay(5, 5);
+				CellDisplay(5, 5, cell_46x, cell_46y);
 			ELSIF
 				('0' & cell_47x <= pixel_column) AND ('0' & pixel_column <= cell_47x + cell_size) AND
 				('0' & cell_47y <= pixel_row) AND ('0' & pixel_row <= cell_47y + cell_size)
 				THEN
-				CellDisplay(5, 6);
+				CellDisplay(5, 6, cell_47x, cell_47y);
 			ELSIF
 				('0' & cell_48x <= pixel_column) AND ('0' & pixel_column <= cell_48x + cell_size) AND
 				('0' & cell_48y <= pixel_row) AND ('0' & pixel_row <= cell_48y + cell_size)
 				THEN
-				CellDisplay(5, 7);
+				CellDisplay(5, 7, cell_48x, cell_48y);
 			ELSIF
 				('0' & cell_49x <= pixel_column) AND ('0' & pixel_column <= cell_49x + cell_size) AND
 				('0' & cell_49y <= pixel_row) AND ('0' & pixel_row <= cell_49y + cell_size)
 				THEN
-				CellDisplay(6, 0);
+				CellDisplay(6, 0, cell_49x, cell_49y);
 			ELSIF
 				('0' & cell_50x <= pixel_column) AND ('0' & pixel_column <= cell_50x + cell_size) AND
 				('0' & cell_50y <= pixel_row) AND ('0' & pixel_row <= cell_50y + cell_size)
 				THEN
-				CellDisplay(6, 1);
+				CellDisplay(6, 1, cell_50x, cell_50y);
 			ELSIF
 				('0' & cell_51x <= pixel_column) AND ('0' & pixel_column <= cell_51x + cell_size) AND
 				('0' & cell_51y <= pixel_row) AND ('0' & pixel_row <= cell_51y + cell_size)
 				THEN
-				CellDisplay(6, 2);
+				CellDisplay(6, 2, cell_51x, cell_51y);
 			ELSIF
 				('0' & cell_52x <= pixel_column) AND ('0' & pixel_column <= cell_52x + cell_size) AND
 				('0' & cell_52y <= pixel_row) AND ('0' & pixel_row <= cell_52y + cell_size)
 				THEN
-				CellDisplay(6, 3);
+				CellDisplay(6, 3, cell_52x, cell_52y);
 			ELSIF
 				('0' & cell_53x <= pixel_column) AND ('0' & pixel_column <= cell_53x + cell_size) AND
 				('0' & cell_53y <= pixel_row) AND ('0' & pixel_row <= cell_53y + cell_size)
 				THEN
-				CellDisplay(6, 4);
+				CellDisplay(6, 4, cell_53x, cell_53y);
 			ELSIF
 				('0' & cell_54x <= pixel_column) AND ('0' & pixel_column <= cell_54x + cell_size) AND
 				('0' & cell_54y <= pixel_row) AND ('0' & pixel_row <= cell_54y + cell_size)
 				THEN
-				CellDisplay(6, 5);
+				CellDisplay(6, 5, cell_54x, cell_54y);
 			ELSIF
 				('0' & cell_55x <= pixel_column) AND ('0' & pixel_column <= cell_55x + cell_size) AND
 				('0' & cell_55y <= pixel_row) AND ('0' & pixel_row <= cell_55y + cell_size)
 				THEN
-				CellDisplay(6, 6);
+				CellDisplay(6, 6, cell_55x, cell_55y);
 			ELSIF
 				('0' & cell_56x <= pixel_column) AND ('0' & pixel_column <= cell_56x + cell_size) AND
 				('0' & cell_56y <= pixel_row) AND ('0' & pixel_row <= cell_56y + cell_size)
 				THEN
-				CellDisplay(6, 7);
+				CellDisplay(6, 7, cell_56x, cell_56y);
 			ELSIF
 				('0' & cell_57x <= pixel_column) AND ('0' & pixel_column <= cell_57x + cell_size) AND
 				('0' & cell_57y <= pixel_row) AND ('0' & pixel_row <= cell_57y + cell_size)
 				THEN
-				CellDisplay(7, 0);
+				CellDisplay(7, 0, cell_57x, cell_57y);
 			ELSIF
 				('0' & cell_58x <= pixel_column) AND ('0' & pixel_column <= cell_58x + cell_size) AND
 				('0' & cell_58y <= pixel_row) AND ('0' & pixel_row <= cell_58y + cell_size)
 				THEN
-				CellDisplay(7, 1);
+				CellDisplay(7, 1, cell_58x, cell_58y);
 			ELSIF
 				('0' & cell_59x <= pixel_column) AND ('0' & pixel_column <= cell_59x + cell_size) AND
 				('0' & cell_59y <= pixel_row) AND ('0' & pixel_row <= cell_59y + cell_size)
 				THEN
-				CellDisplay(7, 2);
+				CellDisplay(7, 2, cell_59x, cell_59y);
 			ELSIF
 				('0' & cell_60x <= pixel_column) AND ('0' & pixel_column <= cell_60x + cell_size) AND
 				('0' & cell_60y <= pixel_row) AND ('0' & pixel_row <= cell_60y + cell_size)
 				THEN
-				CellDisplay(7, 3);
+				CellDisplay(7, 3, cell_60x, cell_60y);
 			ELSIF
 				('0' & cell_61x <= pixel_column) AND ('0' & pixel_column <= cell_61x + cell_size) AND
 				('0' & cell_61y <= pixel_row) AND ('0' & pixel_row <= cell_61y + cell_size)
 				THEN
-				CellDisplay(7, 4);
+				CellDisplay(7, 4, cell_61x, cell_61y);
 			ELSIF
 				('0' & cell_62x <= pixel_column) AND ('0' & pixel_column <= cell_62x + cell_size) AND
 				('0' & cell_62y <= pixel_row) AND ('0' & pixel_row <= cell_62y + cell_size)
 				THEN
-				CellDisplay(7, 5);
+				CellDisplay(7, 5, cell_62x, cell_62y);
 			ELSIF
 				('0' & cell_63x <= pixel_column) AND ('0' & pixel_column <= cell_63x + cell_size) AND
 				('0' & cell_63y <= pixel_row) AND ('0' & pixel_row <= cell_63y + cell_size)
 				THEN
-				CellDisplay(7, 6);
+				CellDisplay(7, 6, cell_63x, cell_63y);
 			ELSIF
 				('0' & cell_64x <= pixel_column) AND ('0' & pixel_column <= cell_64x + cell_size) AND
 				('0' & cell_64y <= pixel_row) AND ('0' & pixel_row <= cell_64y + cell_size)
 				THEN
-				CellDisplay(7, 7);
+				CellDisplay(7, 7, cell_64x, cell_64y);
 			ELSE
 				Red <= grid_color(2);
 				Green <= grid_color(1);
