@@ -123,7 +123,9 @@ architecture Structure of DE2_115_TOP is
 		cell_status : INOUT board_bool;
 		cell_flagged : INOUT board_bool;
 		cell_value : INOUT board_size;
-		cur_sel_cell : INOUT user_pos
+		cur_sel_cell : INOUT user_pos;
+		T_one : OUT std_logic_vector(3 downto 0);
+		T_two : OUT std_logic_vector(3 downto 0)
 	);
 	end component;
 	COMPONENT board IS
@@ -134,7 +136,8 @@ architecture Structure of DE2_115_TOP is
 			-- 
 			cell_status : IN board_bool;
 			cell_flagged : IN board_bool;
-			cell_value : IN board_size
+			cell_value : IN board_size;
+			cell_userb : IN user_pos
 		);
 	END COMPONENT;
 
@@ -147,6 +150,12 @@ architecture Structure of DE2_115_TOP is
 			pixel_row, pixel_column : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 		);
 	END COMPONENT;
+	
+	component bcd_seven
+		port(bcd: in std_logic_vector(3 downto 0);
+				H0: out std_logic_vector(6 downto 0)
+				);
+	end component;
 
 	-- Signals
 	--     VGA
@@ -164,6 +173,9 @@ architecture Structure of DE2_115_TOP is
 	signal cell_status_signal : board_bool;
 	signal cell_flagged_signal : board_bool;
 	signal cell_value_signal : board_size;
+	signal cell_user : user_pos;
+	signal number_one : std_logic_vector(3 downto 0);
+	signal number_two : std_logic_vector(3 downto 0);
 
 begin
 
@@ -178,7 +190,10 @@ begin
 		-- INOUT
 		cell_status => cell_status_signal,
 		cell_flagged => cell_flagged_signal,
-		cell_value => cell_value_signal
+		cell_value => cell_value_signal,
+		cur_sel_cell => cell_user,
+		T_one		=>  number_one(3 downto 0),
+		T_two		 => number_two(3 downto 0)
 		-- cur_sel_cell : INOUT user_pos; -- <- I don't think this is needed
 	);
 	
@@ -220,7 +235,13 @@ begin
 		-- IN
 		cell_status => cell_status_signal,
 		cell_flagged => cell_flagged_signal,
-		cell_value => cell_value_signal
+		cell_value => cell_value_signal,
+		cell_userb => cell_user
 	);
-
+	
+	Seg7_1: bcd_seven port map (
+			number_one(3 downto 0), HEX0);
+	Seg7_2: bcd_seven port map (
+			number_two(3 downto 0), HEX1);
+			
 end Structure;

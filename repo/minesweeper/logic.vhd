@@ -4,6 +4,13 @@
 -- determine the status of the cell
 -- input: IN ports <- user input (buttons, switches)
 -- output
+PACKAGE board_layout_pkg IS
+	subtype small_range is natural range 0 to 10;
+	subtype smallest_range is natural range 0 to 1;
+	type board_size is array (0 to 7, 0 to 7) of small_range;
+	type board_bool is array (0 to 7, 0 to 7) of smallest_range;
+	type user_pos is array(0 TO 1) of small_range;
+END board_layout_pkg;
 
 LIBRARY work;
 USE work.ALL;
