@@ -15,7 +15,7 @@ ENTITY board IS
 		cell_status : IN board_bool;
 		cell_flagged : IN board_bool;
 		cell_value : IN board_size;
-		-- cell_cursor : IN user_pos
+		cell_userb : IN user_pos
 	);
 END board;
 
@@ -724,6 +724,12 @@ ARCHITECTURE behavior OF board IS
 					END IF;
 			END CASE;
 		END IF;
+		-- Teyon made user position show as magenta (overrides showing flag like this)
+		IF cell_x = cell_userb(0) and cell_y = cell_userb(1) then
+			Red <= '1';
+			Green <= '0';
+			Blue <= '1';
+		end if;
 	END CellDisplay;
 BEGIN
 	--MARK: Process
