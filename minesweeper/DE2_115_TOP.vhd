@@ -125,7 +125,9 @@ architecture Structure of DE2_115_TOP is
 		cell_value : INOUT board_size;
 		cur_sel_cell : INOUT user_pos;
 		T_one : OUT std_logic_vector(3 downto 0);
-		T_two : OUT std_logic_vector(3 downto 0)
+		T_two : OUT std_logic_vector(3 downto 0);
+		game_won: OUT std_logic;
+		game_lost: OUT std_logic
 	);
 	end component;
 	COMPONENT board IS
@@ -137,7 +139,10 @@ architecture Structure of DE2_115_TOP is
 			cell_status : IN board_bool;
 			cell_flagged : IN board_bool;
 			cell_value : IN board_size;
-			cell_userb : IN user_pos
+			cell_userb : IN user_pos;
+
+			game_won: IN std_logic;
+			game_lost: IN std_logic
 		);
 	END COMPONENT;
 
@@ -177,6 +182,9 @@ architecture Structure of DE2_115_TOP is
 	signal number_one : std_logic_vector(3 downto 0);
 	signal number_two : std_logic_vector(3 downto 0);
 
+	signal g_won: std_logic;
+	signal g_lost: std_logic;
+
 begin
 
 	logic_block: logic port map (
@@ -193,8 +201,10 @@ begin
 		cell_value => cell_value_signal,
 		cur_sel_cell => cell_user,
 		T_one		=>  number_one(3 downto 0),
-		T_two		 => number_two(3 downto 0)
+		T_two		 => number_two(3 downto 0),
 		-- cur_sel_cell : INOUT user_pos; -- <- I don't think this is needed
+		game_lost => g_lost,
+		game_won => g_won
 	);
 	
 	VGA_R(6 DOWNTO 0) <= "0000000";
@@ -236,7 +246,10 @@ begin
 		cell_status => cell_status_signal,
 		cell_flagged => cell_flagged_signal,
 		cell_value => cell_value_signal,
-		cell_userb => cell_user
+		cell_userb => cell_user,
+
+		game_lost => g_lost,
+		game_won => g_won
 	);
 	
 	Seg7_1: bcd_seven port map (
