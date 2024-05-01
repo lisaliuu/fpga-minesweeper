@@ -38,22 +38,22 @@ ENTITY logic IS
 		T_one : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
 		T_two : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
 		game_won : INOUT STD_LOGIC := '0';
-		game_lost : INOUT STD_LOGIC := '0'
+		game_lost : INOUT STD_LOGIC := '0';
+		flag_count : INOUT INTEGER RANGE 0 TO 99
 	);
 END logic;
 
 ARCHITECTURE struct OF logic IS
 	-- SINGAL cell_status_signal
 	COMPONENT board_generator
-
 		PORT
 		(
 			CLOCK_50, start_randomizer : IN STD_LOGIC;
 			banned_position : IN user_pos;
 			board_output : OUT board_size;
 			completed : INOUT STD_LOGIC);
-
 	END COMPONENT;
+
 	SIGNAL first_pressed : STD_LOGIC := '0';
 	SIGNAL start_gen : STD_LOGIC := '0';
 	SIGNAL check_win : STD_LOGIC := '1';
@@ -73,6 +73,7 @@ BEGIN
 		board_output => cell_value,
 		completed => finished_gen
 	);
+
 	user_input : PROCESS (clk, buttons, finished_gen)
 		-- switch 0 == 0 for playing
 		-- switch 0 == 1 for game over/reset
@@ -179,8 +180,10 @@ BEGIN
 					-- flag
 					IF (cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) = 0) THEN
 						cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
+						flag_count <= (flag_count - 1);
 					ELSE
 						cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
+						flag_count <= (flag_count + 1);
 					END IF;
 				END IF;
 				switch_state <= switches(2);
