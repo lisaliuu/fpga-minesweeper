@@ -61,7 +61,7 @@ ARCHITECTURE struct OF logic IS
 	SIGNAL ban_position : user_pos;
 	--signal counter : unsigned(29 downto 0) := "000000000000000000000000000000";
 	SIGNAL button_state : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1111";
-	SIGNAL switch_state : STD_LOGIC := '0';
+	SIGNAL switch_state : STD_LOGIC_VECTOR(1 DOWNTO 0) := "00";
 
 BEGIN
 
@@ -147,35 +147,45 @@ BEGIN
 			ELSE
 				cur_sel_cell <= cur_sel_cell;
 			END IF;
-			IF (switches(1) = '1') THEN
-				-- click (closed -> open)
-				IF (first_pressed = '0') THEN
-					--first press
-					ban_position <= cur_sel_cell;
-					-- board is now partially open
-					first_pressed <= '1';
-					start_gen <= '1';
-					-- ELSE 
-				ELSIF finished_gen = '1' THEN
-					cell_status(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
-					IF (cell_value(cur_sel_cell(0), cur_sel_cell(1)) = 9) THEN -- hit a bomb
-						game_lost <= '1'; -- lost
-					END IF;
+			IF (rising_edge(clk)) THEN
+				IF (switches(1) = '1' and switch_state(0) = '0') THEN
+					-- click (closed -> open)
+					IF (first_pressed = '0') THEN
+						--first press
+						ban_position <= cur_sel_cell;
+						-- board is now partially open
+						first_pressed <= '1';
+						start_gen <= '1';
+						-- ELSE 
+					ELSIF finished_gen = '1' THEN
+						cell_status(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
+						IF (cell_value(cur_sel_cell(0), cur_sel_cell(1)) = 9) THEN -- hit a bomb
+							game_lost <= '1'; -- lost
+						END IF;
 
-					FOR i IN 0 TO 7 LOOP -- Column
-						FOR j IN 0 TO 7 LOOP -- Row
-							IF (NOT (cell_status(i, j) = 1 OR cell_flagged(i, j) = 1)) THEN
-								check_win <= '0';
-							END IF;
+						FOR i IN 0 TO 7 LOOP -- Column
+							FOR j IN 0 TO 7 LOOP -- Row
+								IF (NOT (cell_status(i, j) = 1 OR cell_flagged(i, j) = 1)) THEN
+									check_win <= '0';
+								END IF;
+							END LOOP;
 						END LOOP;
-					END LOOP;
-					IF (check_win = '1') THEN
-						game_won <= '1'; -- won
+						IF (check_win = '1') THEN
+							game_won <= '1'; -- won
+						END IF;
 					END IF;
 				END IF;
+				switch_state(0) <= switches(1);
+			else
+				game_won <= game_won;
+				game_lost <= game_lost;
+				first_pressed <= first_pressed;
+				start_gen <= start_gen;
+				ban_position <= ban_position;
+				cell_status <= cell_status;
 			END IF;
 			IF (rising_edge(clk)) THEN
-				IF (switches(2) = '1' AND switch_state = '0') THEN
+				IF (switches(2) = '1' AND switch_state(1) = '0') THEN
 					-- flag
 					IF (cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) = 0) THEN
 						cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 1;
@@ -183,7 +193,7 @@ BEGIN
 						cell_flagged(cur_sel_cell(0), cur_sel_cell(1)) <= 0;
 					END IF;
 				END IF;
-				switch_state <= switches(2);
+				switch_state(1) <= switches(2);
 			ELSE
 				cell_flagged <= cell_flagged;
 			END IF;

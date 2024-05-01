@@ -192,7 +192,7 @@ begin
 		clk => CLOCK_50,
 		reset => SW(0),
 		buttons => KEY(3 DOWNTO 0),
-		switches => SW(2 DOWNTO 0),
+		switches => SW(17 DOWNTO 15),
 		-- OUT
 		VGA_UPDATE => VGA_update_int,
 		-- INOUT
