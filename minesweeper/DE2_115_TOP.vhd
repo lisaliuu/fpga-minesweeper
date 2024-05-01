@@ -256,5 +256,8 @@ begin
 			number_one(3 downto 0), HEX0);
 	Seg7_2: bcd_seven port map (
 			number_two(3 downto 0), HEX1);
+	Seg7_3: bcd_seven port map (
+		STD_LOGIC_VECTOR(to_unsigned(cell_value_signal(cell_user(0),cell_user(1)), 4)),
+		HEX7);
 			
 end Structure;
