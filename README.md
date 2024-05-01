@@ -8,7 +8,6 @@
   - repo/minesweeper/video_PLL.vhd
 
 Connect4
-
 - DE2_115_TOP
   - logic
   - VGA_SYNC_module
@@ -17,12 +16,12 @@ Connect4
   - LCD_Display
 
 MineSweeper
-
-- DE2 <- top level
+- DE2_115_TOP <- top level
   - logic
     - board_generator
       - lfsr
   - BOARD
-  - VGA_SYNC_module
+  - VGA_SYNC
     - video_PLL
-  - LCD
+  - LCD_Display
+  - bcd_seven
