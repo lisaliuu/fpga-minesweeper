@@ -84,7 +84,7 @@ LCD_display_string <= (
 --| FPGA Minesweeper     |
 ------------------------------
 -- Line 1
-X"42",X"6F",X"6D",X"62",X"73",X"3A",X"0" & flags(7 DOWNTO 4),X"0" & flags(3 DOWNTO 0),
+X"46",X"6C",X"61",X"67",X"73",X"3A",X"0" & flags(7 DOWNTO 4),X"0" & flags(3 DOWNTO 0),
 X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",
 -- Line 2
 X"46",X"50",X"47",X"41",X"20",X"4D",X"69",X"6E",
